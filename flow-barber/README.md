@@ -4,7 +4,8 @@ Web de una sola página para Flow Barber (Av. del Montgó 26, Dénia). HTML + CS
 
 - **Publicar:** sube el contenido de esta carpeta (incluido `.htaccess`) a Hostinger, Netlify o cualquier hosting estático.
 - **Probar en local:** `python3 -m http.server 8765` dentro de la carpeta y abre http://localhost:8765/
+- **Reservas:** la sección `#reservar` carga el widget oficial de Booksy (id 153876) dentro de la página. Todos los botones "Reservar" llevan ahí.
 - **Editar precios / horario:** precios en `index.html` (sección `#servicios`); horario en `index.html` (`#visita`) y en `lib/manifest.js` (indicador "Abierto/Cerrado").
-- **Tras cada cambio:** sube el número `?v=20261030` en `index.html` para evitar caché.
+- **Tras cada cambio:** sube el número `?v=20261030b` en `index.html` para evitar caché.
 
 Datos tomados del perfil público de Booksy (octubre 2026). Fotos: Flow Barber (perfil de Booksy).

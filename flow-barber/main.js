@@ -245,6 +245,47 @@
     });
   }
 
+  /* ---------- Booksy booking widget (inline, lazy) ---------- */
+  function initBooking() {
+    var box = $("[data-booksy]");
+    if (!box) return;
+    var loaded = false;
+    function load() {
+      if (loaded) return;
+      loaded = true;
+      var s = document.createElement("script");
+      s.src = "https://booksy.com/widget/code.js?id=" + (box.dataset.booksyId || "153876") + "&country=es&lang=es&mode=inline";
+      s.async = true;
+      s.onerror = function () { box.classList.add("is-error"); };
+      box.appendChild(s);
+      // hide the loader once the iframe has loaded (or after 12s at worst)
+      var t0 = Date.now();
+      (function wait() {
+        var f = box.querySelector("iframe");
+        if (f) {
+          f.removeAttribute("width");
+          f.setAttribute("title", "Reserva de cita en Flow Barber (Booksy)");
+          f.addEventListener("load", function () { box.classList.add("is-loaded"); });
+          setTimeout(function () { box.classList.add("is-loaded"); }, 6000);
+          return;
+        }
+        if (Date.now() - t0 < 12000) setTimeout(wait, 150);
+        else box.classList.add("is-loaded");
+      })();
+    }
+    $$('a[href="#reservar"]').forEach(function (a) { a.addEventListener("click", load); });
+    if (location.hash === "#reservar") load();
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries.some(function (e) { return e.isIntersecting; })) { load(); io.disconnect(); }
+      }, { rootMargin: "900px 0px" });
+      io.observe(box);
+    } else {
+      load();
+    }
+    setTimeout(load, 8000); // load anyway after first paint settles
+  }
+
   /* ---------- GSAP: studio parallax + final CTA ---------- */
   function initGsap() {
     if (!window.gsap || !window.ScrollTrigger) return;
@@ -539,6 +580,7 @@
     safe(initMagnetic, "initMagnetic");
     safe(initTilt, "initTilt");
     safe(initScramble, "initScramble");
+    safe(initBooking, "initBooking");
     safe(initGsap, "initGsap");
     safe(initScene, "initScene");
     var yr = $("[data-year]");

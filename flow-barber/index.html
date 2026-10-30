@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;800&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261030">
+<link rel="stylesheet" href="styles.css?v=20261030b">
 <script>document.documentElement.classList.add("js");</script>
 <script type="application/ld+json">
 {
@@ -65,7 +65,7 @@
   </nav>
   <div class="nav-right">
     <span class="status mono" data-status><i></i><b>Horario L–S</b></span>
-    <a class="btn btn-gold btn-sm" href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">Reservar</a>
+    <a class="btn btn-gold btn-sm" href="#reservar">Reservar</a>
     <button class="nav-burger" type="button" aria-label="Abrir menú" aria-expanded="false" data-burger><span></span><span></span></button>
   </div>
 </header>
@@ -76,7 +76,7 @@
     <a href="#trabajos">Trabajos</a>
     <a href="#equipo">Equipo</a>
     <a href="#visita">Visítanos</a>
-    <a href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener" class="menu-cta">Reservar en Booksy ↗</a>
+    <a href="#reservar" class="menu-cta">Reservar cita ↓</a>
   </nav>
 </div>
 
@@ -97,8 +97,8 @@
       </h1>
       <p class="hero-lead reveal">Fades, barba y cejas con precisión milimétrica. Y en casi todos los servicios, la bebida va de cortesía.</p>
       <div class="hero-ctas reveal">
-        <a class="btn btn-gold" data-magnetic href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">
-          <span>Reservar cita</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        <a class="btn btn-gold" data-magnetic href="#reservar">
+          <span>Reservar cita</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
         </a>
         <a class="btn btn-ghost" href="#servicios"><span>Ver servicios y precios</span></a>
       </div>
@@ -169,7 +169,7 @@
 
     <div class="svc-foot reveal">
       <p class="mono">Pago en el local · Reserva online 24/7</p>
-      <a class="btn btn-gold" data-magnetic href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener"><span>Elegir servicio en Booksy</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+      <a class="btn btn-gold" data-magnetic href="#reservar"><span>Reservar aquí</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
     </div>
   </section>
 
@@ -291,14 +291,28 @@
     </div>
   </section>
 
-  <!-- FINAL CTA -->
-  <section class="final" data-stage="7">
+  <!-- BOOKING -->
+  <section class="final" id="reservar" data-stage="7">
     <p class="kicker mono reveal">06 — Reserva</p>
-    <a class="final-cta reveal" href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">
+    <h2 class="final-cta reveal">
       <span class="final-line">Reserva</span>
-      <span class="final-line final-line-2">tu <em>hora</em> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
-    </a>
-    <p class="final-sub mono reveal">Online en Booksy · elige servicio, barbero y hora</p>
+      <span class="final-line final-line-2">tu <em>hora</em> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>
+    </h2>
+    <p class="final-sub mono reveal">Elige servicio, barbero y hora aquí mismo</p>
+
+    <div class="booking reveal">
+      <div class="booking-bar mono" aria-hidden="true">
+        <span class="booking-live"><i></i>Agenda en directo</span>
+        <span>Servicio → Hora → Confirmar</span>
+      </div>
+      <div class="booking-frame" data-booksy data-booksy-id="153876">
+        <div class="booking-loading">
+          <span class="booking-spinner" aria-hidden="true"></span>
+          <p class="mono">Cargando agenda…</p>
+        </div>
+      </div>
+      <p class="booking-note">Sistema de reservas de Booksy. Para confirmar la cita te pedirá tu email o tu cuenta de Facebook o Apple. ¿No se carga? <a href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">Reserva en Booksy ↗</a></p>
+    </div>
   </section>
 </main>
 
@@ -315,10 +329,10 @@
   <p class="foot-legal mono">© <span data-year>2026</span> Flow Barber · Fotografías: Flow Barber (perfil de Booksy)</p>
 </footer>
 
-<script defer src="lib/gsap.min.js?v=20261030"></script>
-<script defer src="lib/ScrollTrigger.min.js?v=20261030"></script>
-<script defer src="lib/three.min.js?v=20261030"></script>
-<script defer src="lib/manifest.js?v=20261030"></script>
-<script defer src="main.js?v=20261030"></script>
+<script defer src="lib/gsap.min.js?v=20261030b"></script>
+<script defer src="lib/ScrollTrigger.min.js?v=20261030b"></script>
+<script defer src="lib/three.min.js?v=20261030b"></script>
+<script defer src="lib/manifest.js?v=20261030b"></script>
+<script defer src="main.js?v=20261030b"></script>
 </body>
 </html>
