@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#050403">
+<title>Reservas propias · Flow Barber</title>
+<meta name="description" content="Propuesta para Flow Barber: sistema de reservas propio integrado en la web, panel del dueño y guía de instalación.">
+<link rel="icon" href="assets/img/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;800&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261031a">
+<link rel="stylesheet" href="guia.css?v=20261031a">
+<script>document.documentElement.classList.add("js");</script>
+</head>
+<body class="guia">
+
+<div class="scene-fallback" aria-hidden="true"></div>
+<div class="layer-vignette" aria-hidden="true"></div>
+<div class="layer-grid" aria-hidden="true"></div>
+<div class="layer-grain" aria-hidden="true"></div>
+
+<header class="nav" data-nav>
+  <a class="nav-logo" href="./" aria-label="Flow Barber, ir a la web">
+    <img src="assets/img/logo.webp" alt="" width="44" height="44">
+    <span>FLOW<i>//</i>BARBER</span>
+  </a>
+  <nav class="nav-links" aria-label="Secciones de la guía">
+    <a href="#incluye" data-scramble>Qué incluye</a>
+    <a href="#cliente" data-scramble>Reservar</a>
+    <a href="#panel" data-scramble>Panel</a>
+    <a href="#instalar" data-scramble>Instalación</a>
+    <a href="#faq" data-scramble>Preguntas</a>
+  </nav>
+  <div class="nav-right">
+    <a class="btn btn-gold btn-sm" href="./">Ver la web</a>
+    <button class="nav-burger" type="button" aria-label="Abrir menú" aria-expanded="false" data-burger><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="menu" data-menu hidden>
+  <nav aria-label="Menú móvil">
+    <a href="#incluye">Qué incluye</a>
+    <a href="#cliente">Reservar</a>
+    <a href="#panel">Panel</a>
+    <a href="#instalar">Instalación</a>
+    <a href="#faq">Preguntas</a>
+    <a href="./" class="menu-cta">Ver la web ↗</a>
+  </nav>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="g-hero">
+    <div class="g-hero-copy">
+      <p class="kicker mono reveal">Propuesta para Flow Barber</p>
+      <h1 class="g-title reveal">Tu agenda.<br>En <em>tu</em> web.</h1>
+      <p class="g-lead reveal">Un sistema de reservas propio, dentro de la web de Flow Barber. Los clientes reservan sin intermediarios y tú lo gestionas todo desde el móvil. Sin cuotas mensuales ni comisiones.</p>
+      <div class="hero-ctas reveal">
+        <a class="btn btn-gold" href="#cliente"><span>Ver cómo funciona</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+        <a class="btn btn-ghost" href="#instalar"><span>Guía de instalación</span></a>
+      </div>
+      <dl class="g-facts reveal">
+        <div><dt class="mono">Cuota mensual</dt><dd>0 €<sup>*</sup></dd></div>
+        <div><dt class="mono">Instalación</dt><dd>~10 min</dd></div>
+        <div><dt class="mono">Los datos</dt><dd>Tuyos</dd></div>
+      </dl>
+      <p class="g-foot mono reveal">* Funciona con una cuenta gratuita de Google (Sheets, Calendar y Gmail).</p>
+    </div>
+    <div class="g-hero-phones reveal" aria-hidden="true">
+      <figure class="phone phone-back"><img src="assets/img/guia/panel-1-agenda.webp" alt="" width="780" height="1688"></figure>
+      <figure class="phone phone-front"><img src="assets/img/guia/web-5-confirmada.webp" alt="" width="780" height="1688"></figure>
+    </div>
+  </section>
+
+  <p class="g-disclaimer mono">Las capturas de esta página son del sistema real funcionando, con <b>datos de ejemplo</b>: los clientes son inventados.</p>
+
+  <!-- QUÉ INCLUYE -->
+  <section class="g-sec" id="incluye">
+    <header class="sec-head">
+      <p class="kicker mono reveal">01 — Qué incluye</p>
+      <h2 class="sec-title reveal">Todo lo que <em>necesitas</em></h2>
+    </header>
+    <div class="g-features">
+      <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">✂</span><h3>Reserva en 4 pasos</h3><p>Servicio, barbero, día y hora, y sus datos. Sin descargar apps ni crear cuentas.</p></article>
+      <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">◷</span><h3>Solo huecos libres</h3><p>La web calcula los huecos según el horario, la duración de cada servicio y las citas de cada barbero. Nadie puede reservar una hora ya ocupada.</p></article>
+      <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">✉</span><h3>Confirmación por email</h3><p>El cliente recibe su cita por email con un enlace para cancelar. Tú recibes un aviso de cada reserva y de cada cancelación.</p></article>
+      <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">▦</span><h3>En tu Google Calendar</h3><p>Cada cita aparece sola en el calendario de la barbería, y puedes compartirlo con los barberos.</p></article>
+      <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">⌘</span><h3>Panel del dueño</h3><p>La agenda del día, las próximas citas, las citas por teléfono y los cierres, todo desde el móvil y con contraseña.</p></article>
+      <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">⊘</span><h3>Cierres y vacaciones</h3><p>Cierra un día entero o unas horas, para toda la barbería o para un barbero, y la web deja de ofrecer esos huecos.</p></article>
+    </div>
+  </section>
+
+  <!-- CLIENTE -->
+  <section class="g-sec" id="cliente">
+    <header class="sec-head">
+      <p class="kicker mono reveal">02 — Así reserva el cliente</p>
+      <h2 class="sec-title reveal">Cinco toques<br>y <em>listo</em></h2>
+      <p class="sec-sub reveal">Desde la sección «Reserva» de la web, con el mismo diseño. Desliza para ver cada paso.</p>
+    </header>
+    <div class="g-gallery reveal" tabindex="0" aria-label="Pasos de la reserva">
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/web-1-servicio.webp" alt="Paso 1: lista de servicios con precio y duración" loading="lazy" width="780" height="1688"></div><figcaption><b>1</b>Elige el servicio. Ve precio y duración.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/web-2-barbero.webp" alt="Paso 2: elegir barbero o Cualquiera" loading="lazy" width="780" height="1688"></div><figcaption><b>2</b>Elige barbero, o «Cualquiera» para el primero libre.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/web-3-hora.webp" alt="Paso 3: días y horas libres" loading="lazy" width="780" height="1688"></div><figcaption><b>3</b>Solo ve los días y horas libres.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/web-4-datos.webp" alt="Paso 4: resumen de la cita y formulario con nombre, teléfono y email" loading="lazy" width="780" height="1688"></div><figcaption><b>4</b>Nombre, teléfono y, si quiere, email.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/web-5-confirmada.webp" alt="Paso 5: cita confirmada con botón para añadir al calendario" loading="lazy" width="780" height="1688"></div><figcaption><b>5</b>Cita confirmada. La puede añadir a su calendario.</figcaption></figure>
+    </div>
+
+    <div class="g-email reveal">
+      <p class="mono g-email-label">El email que recibe el cliente (texto real generado por el sistema)</p>
+      <div class="g-email-card">
+        <p class="g-email-head"><span class="mono">De</span> Flow Barber<br><span class="mono">Asunto</span> Tu cita en Flow Barber: sábado 31 de octubre a las 18:00</p>
+        <pre>Hola Lucas Ortega,
+
+Tu cita está confirmada.
+
+Corte + barba con Pool
+sábado 31 de octubre a las 18:00 (40 min)
+20 € · pago en el local
+Avinguda del Montgó, 26, 03700 Dénia
+
+Si no puedes venir, cancela aquí:
+<u>enlace personal para cancelar</u>
+
+Gracias,
+Flow Barber</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL -->
+  <section class="g-sec" id="panel">
+    <header class="sec-head">
+      <p class="kicker mono reveal">03 — Así lo gestionas tú</p>
+      <h2 class="sec-title reveal">El panel<br>del <em>dueño</em></h2>
+      <p class="sec-sub reveal">Una página privada con contraseña, pensada para el móvil. Se puede guardar en la pantalla de inicio como si fuera una app.</p>
+    </header>
+    <div class="g-gallery reveal" tabindex="0" aria-label="Pantallas del panel">
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/panel-1-agenda.webp" alt="Agenda del día con número de citas, caja prevista y citas por hora" loading="lazy" width="780" height="1688"></div><figcaption><b>Agenda</b>Las citas del día, cuántas hay y la caja prevista. Se puede filtrar por barbero.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/panel-2-cita.webp" alt="Tarjetas de cita con botones Llamar, WhatsApp, Hecha, No vino y Cancelar" loading="lazy" width="780" height="1688"></div><figcaption><b>Cada cita</b>Llamar o escribir por WhatsApp con un toque. Marcar «Hecha» o «No vino».</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/panel-3-cancelar.webp" alt="Ventana para cancelar una cita con opción de avisar al cliente por email" loading="lazy" width="780" height="1688"></div><figcaption><b>Cancelar</b>Con aviso automático por email al cliente. El hueco vuelve a quedar libre.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/panel-4-nueva.webp" alt="Formulario de nueva cita con horas libres" loading="lazy" width="780" height="1688"></div><figcaption><b>Nueva cita</b>Para quien llama o entra por la puerta. Esa hora deja de ofrecerse en la web.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/panel-5-proximas.webp" alt="Lista de próximas citas agrupadas por día" loading="lazy" width="780" height="1688"></div><figcaption><b>Próximas</b>Todas las citas confirmadas de los próximos 30 días.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/panel-6-cierres.webp" alt="Formulario de cierres y lista de próximos cierres" loading="lazy" width="780" height="1688"></div><figcaption><b>Cierres</b>Vacaciones, médico, festivos: por horas o días, para todos o para un barbero.</figcaption></figure>
+      <figure class="g-shot"><div class="phone"><img src="assets/img/guia/panel-0-login.webp" alt="Pantalla de acceso con contraseña" loading="lazy" width="780" height="1688"></div><figcaption><b>Acceso</b>Con contraseña. Tras 10 intentos fallidos se bloquea 10 minutos.</figcaption></figure>
+    </div>
+
+    <div class="g-sheet reveal">
+      <p class="mono g-email-label">Y todo queda guardado en una hoja de Google de la barbería (ejemplo de cómo se ordena)</p>
+      <div class="g-sheet-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Estado</th><th>Fecha</th><th>Hora</th><th>Servicio</th><th>Precio €</th><th>Barbero</th><th>Nombre</th><th>Teléfono</th></tr></thead>
+          <tbody>
+            <tr><td>FB-261031-…</td><td>Completada</td><td>2026-10-31</td><td>10:00</td><td>Corte + barba</td><td>20</td><td>Pool</td><td>Carlos Martín</td><td>600 123 401</td></tr>
+            <tr><td>FB-261031-…</td><td>Confirmada</td><td>2026-10-31</td><td>12:00</td><td>Corte + barba + cejas</td><td>22</td><td>Pool</td><td>Adrián López</td><td>600 123 404</td></tr>
+            <tr><td>FB-261031-…</td><td>Cancelada</td><td>2026-10-31</td><td>17:00</td><td>Rapado</td><td>15</td><td>Pool</td><td>Marcos Vidal</td><td>600 123 407</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="g-note">La hoja también tiene una pestaña <b>Bloqueos</b> para los cierres. Se puede abrir, filtrar o exportar a Excel cuando quieras.</p>
+    </div>
+  </section>
+
+  <!-- INSTALACIÓN -->
+  <section class="g-sec" id="instalar">
+    <header class="sec-head">
+      <p class="kicker mono reveal">04 — Instalación</p>
+      <h2 class="sec-title reveal">Paso a <em>paso</em></h2>
+      <p class="sec-sub reveal">Se hace una sola vez, mejor desde un ordenador.</p>
+    </header>
+    <ul class="g-needs reveal" aria-label="Qué hace falta">
+      <li><span class="mono">Necesitas</span>Una cuenta de Google (Gmail) de la barbería</li>
+      <li><span class="mono">Tiempo</span>Unos 10 minutos</li>
+      <li><span class="mono">Coste</span>0 €</li>
+    </ul>
+
+    <ol class="g-steps">
+      <li class="g-step reveal">
+        <span class="g-num">1</span>
+        <div><h3>Crear la hoja de reservas</h3>
+          <p>Con la cuenta de Google de la barbería, abre <b>sheets.new</b>. Se crea una hoja en blanco: ponle de nombre <b>Flow Barber — Reservas</b>.</p></div>
+      </li>
+      <li class="g-step reveal">
+        <span class="g-num">2</span>
+        <div><h3>Pegar el programa</h3>
+          <p>En la hoja: menú <b>Extensiones → Apps Script</b>. Borra lo que haya en el editor y pega el programa de reservas que te entregamos (<code>Code.gs</code>).</p>
+          <p>En la línea <code>adminPassword: ""</code> escribe la <b>contraseña del panel</b>: larga y que no uses en otro sitio. Guarda (icono del disquete).</p></div>
+      </li>
+      <li class="g-step reveal">
+        <span class="g-num">3</span>
+        <div><h3>Preparar la hoja y dar permisos</h3>
+          <p>Arriba, elige la función <b>setup</b> y pulsa <b>▶ Ejecutar</b>. Google pedirá permiso para usar la hoja, el calendario y el email.</p>
+          <div class="g-warn"><b>Aviso «Google no ha verificado esta aplicación».</b> Es normal: el programa es de la barbería, no de una empresa externa. Pulsa <b>Configuración avanzada → Ir a … (no seguro) → Permitir</b>.</div>
+          <p>Al volver a la hoja verás dos pestañas nuevas: <b>Reservas</b> y <b>Bloqueos</b>.</p></div>
+      </li>
+      <li class="g-step reveal">
+        <span class="g-num">4</span>
+        <div><h3>Publicarlo</h3>
+          <p><b>Implementar → Nueva implementación →</b> tipo <b>Aplicación web</b>.</p>
+          <ul class="g-kv">
+            <li><span>Ejecutar como</span><b>Yo</b> (la cuenta de la barbería)</li>
+            <li><span>Quién tiene acceso</span><b>Cualquier usuario</b> (si no, la web no podrá reservar)</li>
+          </ul>
+          <p>Pulsa <b>Implementar</b> y copia la <b>URL de la aplicación web</b>, que termina en <code>/exec</code>.</p></div>
+      </li>
+      <li class="g-step reveal">
+        <span class="g-num">5</span>
+        <div><h3>Conectar la web</h3>
+          <p>Envíanos esa URL. La conectamos a la web y hacemos una reserva de prueba contigo. Desde ese momento:</p>
+          <ul class="g-checks">
+            <li>La sección «Reserva» de la web acepta citas.</li>
+            <li>El panel del dueño funciona con tu contraseña.</li>
+            <li>Las citas llegan a tu hoja, a tu calendario y a tu email.</li>
+          </ul></div>
+      </li>
+    </ol>
+    <p class="g-links reveal">
+      <a class="link-arrow mono" href="https://github.com/jiglesiasp-web/flow-barber/blob/main/reservas/INSTALAR.md" target="_blank" rel="noopener">Guía completa ↗</a>
+      <a class="link-arrow mono" href="https://github.com/jiglesiasp-web/flow-barber/blob/main/reservas/Code.gs" target="_blank" rel="noopener">Programa de reservas (Code.gs) ↗</a>
+    </p>
+
+    <div class="g-daily reveal">
+      <h3>En el día a día</h3>
+      <div class="g-daily-grid">
+        <div><b>Ver las citas</b><p>En el panel del dueño o en tu Google Calendar.</p></div>
+        <div><b>Que los barberos vean su agenda</b><p>Compartes el Google Calendar con su email.</p></div>
+        <div><b>Cambiar precios u horario</b><p>Se cambian en el programa y en la web. Te lo hacemos nosotros o te explicamos cómo.</p></div>
+        <div><b>Privacidad</b><p>Los datos se quedan en la cuenta de Google de la barbería. Conviene borrar de vez en cuando las citas antiguas.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="g-sec" id="faq">
+    <header class="sec-head">
+      <p class="kicker mono reveal">05 — Preguntas</p>
+      <h2 class="sec-title reveal">Lo que <em>conviene</em> saber</h2>
+    </header>
+    <div class="g-faq">
+      <details class="reveal" open><summary>¿Cuánto cuesta al mes?</summary><p>Nada. Usa los servicios gratuitos de Google: Sheets para guardar, Calendar para la agenda y Gmail para los emails. Una cuenta gratuita permite unos 100 emails al día, de sobra para una barbería.</p></details>
+      <details class="reveal"><summary>¿Qué pasa con Booksy?</summary><p>La web no depende de Booksy en nada. Puedes mantenerlo un tiempo o darte de baja. Si te das de baja, pierdes el perfil que tienes allí con sus reseñas, y los clientes que te encuentran desde la app de Booksy.</p></details>
+      <details class="reveal"><summary>¿Y si un cliente quiere cancelar?</summary><p>Si dejó su email, cancela con el enlace del email y el hueco se libera solo. Si no, te avisa y la cancelas tú desde el panel.</p></details>
+      <details class="reveal"><summary>¿Envía recordatorios antes de la cita?</summary><p>Ahora mismo no. El cliente recibe la confirmación por email al reservar. Se puede añadir un recordatorio por email el día antes.</p></details>
+      <details class="reveal"><summary>¿Se puede cobrar o pedir señal online?</summary><p>No está incluido: el pago es en el local, como ahora.</p></details>
+      <details class="reveal"><summary>¿Pueden reservar dos personas la misma hora?</summary><p>No. Cada reserva se comprueba en el momento de confirmar. Si alguien acaba de coger ese hueco, la web pide elegir otra hora.</p></details>
+      <details class="reveal"><summary>¿Y si falla Google?</summary><p>Si falla el calendario o el email, la cita se guarda igual en la hoja. Si Google entero no responde, que es muy raro, la web avisa al cliente de que lo intente de nuevo.</p></details>
+      <details class="reveal"><summary>¿Quién es responsable de los datos de los clientes?</summary><p>La barbería: se guardan en su cuenta de Google. El cliente acepta una casilla de uso de datos al reservar. Conviene tener también un aviso de privacidad en la web.</p></details>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="final g-final">
+    <p class="kicker mono reveal">06 — Siguiente paso</p>
+    <h2 class="final-cta reveal"><span class="final-line">¿Lo</span><span class="final-line final-line-2"><em>activamos</em>?</span></h2>
+    <div class="hero-ctas g-final-ctas reveal">
+      <a class="btn btn-gold" href="./"><span>Ver la web</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+      <a class="btn btn-ghost" href="admin.html"><span>Abrir el panel</span></a>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand">
+    <img src="assets/img/logo.webp" alt="Logotipo de Flow Barber" width="72" height="72" loading="lazy">
+    <p>Flow Barber<br><span class="mono">Av. del Montgó 26 · Dénia</span></p>
+  </div>
+  <nav class="foot-links mono" aria-label="Enlaces">
+    <a href="./">La web ↗</a>
+    <a href="admin.html">Panel ↗</a>
+    <a href="#top">Volver arriba ↑</a>
+  </nav>
+  <p class="foot-legal mono">Propuesta de sistema de reservas propio · Capturas con datos de ejemplo</p>
+</footer>
+
+<script defer src="lib/manifest.js?v=20261031a"></script>
+<script defer src="main.js?v=20261031a"></script>
+</body>
+</html>

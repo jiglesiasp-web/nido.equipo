@@ -374,7 +374,8 @@
   function boot() {
     if (!API) {
       main.innerHTML = '<div class="notice"><h1>Panel del dueño</h1><p>El sistema de reservas todavía no está conectado.</p>' +
-        '<p>Sigue la guía <a href="https://github.com/jiglesiasp-web/flow-barber/blob/main/reservas/INSTALAR.md" target="_blank" rel="noopener">reservas/INSTALAR.md</a> y pega la URL en <code>bookingApi</code> de <code>lib/manifest.js</code>.</p></div>';
+        '<p>Sigue la guía <a href="https://github.com/jiglesiasp-web/flow-barber/blob/main/reservas/INSTALAR.md" target="_blank" rel="noopener">reservas/INSTALAR.md</a> y pega la URL en <code>bookingApi</code> de <code>lib/manifest.js</code>.</p>' +
+        '<p><a href="guia.html">Ver cómo queda el panel y la guía paso a paso →</a></p></div>';
       return;
     }
     $$("[data-tab]").forEach(function (b) { b.addEventListener("click", function () { setTab(b.dataset.tab); }); });
