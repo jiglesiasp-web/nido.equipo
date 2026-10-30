@@ -14,7 +14,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;800&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261030b">
+<link rel="stylesheet" href="styles.css?v=20261030c">
 <script>document.documentElement.classList.add("js");</script>
 <script type="application/ld+json">
 {
@@ -305,13 +305,15 @@
         <span class="booking-live"><i></i>Agenda en directo</span>
         <span>Servicio → Hora → Confirmar</span>
       </div>
+      <div class="bk" data-booking hidden aria-live="polite"></div>
       <div class="booking-frame" data-booksy data-booksy-id="153876">
         <div class="booking-loading">
           <span class="booking-spinner" aria-hidden="true"></span>
           <p class="mono">Cargando agenda…</p>
         </div>
       </div>
-      <p class="booking-note">Sistema de reservas de Booksy. Para confirmar la cita te pedirá tu email o tu cuenta de Facebook o Apple. ¿No se carga? <a href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">Reserva en Booksy ↗</a></p>
+      <p class="booking-note" data-note-own hidden>Reserva directa con Flow Barber. Tus datos solo se usan para gestionar la cita. Si prefieres, también puedes reservar en <a href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">Booksy ↗</a></p>
+      <p class="booking-note" data-note-booksy>Sistema de reservas de Booksy. Para confirmar la cita te pedirá tu email o tu cuenta de Facebook o Apple. ¿No se carga? <a href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">Reserva en Booksy ↗</a></p>
     </div>
   </section>
 </main>
@@ -329,10 +331,10 @@
   <p class="foot-legal mono">© <span data-year>2026</span> Flow Barber · Fotografías: Flow Barber (perfil de Booksy)</p>
 </footer>
 
-<script defer src="lib/gsap.min.js?v=20261030b"></script>
-<script defer src="lib/ScrollTrigger.min.js?v=20261030b"></script>
-<script defer src="lib/three.min.js?v=20261030b"></script>
-<script defer src="lib/manifest.js?v=20261030b"></script>
-<script defer src="main.js?v=20261030b"></script>
+<script defer src="lib/gsap.min.js?v=20261030c"></script>
+<script defer src="lib/ScrollTrigger.min.js?v=20261030c"></script>
+<script defer src="lib/three.min.js?v=20261030c"></script>
+<script defer src="lib/manifest.js?v=20261030c"></script>
+<script defer src="main.js?v=20261030c"></script>
 </body>
 </html>

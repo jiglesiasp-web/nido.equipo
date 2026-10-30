@@ -247,6 +247,16 @@
 
   /* ---------- Booksy booking widget (inline, lazy) ---------- */
   function initBooking() {
+    var own = $("[data-booking]");
+    if (own && data.bookingApi) {
+      var frame = $("[data-booksy]"), noteB = $("[data-note-booksy]"), noteO = $("[data-note-own]");
+      if (frame) frame.remove();
+      if (noteB) noteB.hidden = true;
+      if (noteO) noteO.hidden = false;
+      own.hidden = false;
+      initOwnBooking(own);
+      return;
+    }
     var box = $("[data-booksy]");
     if (!box) return;
     var loaded = false;
@@ -284,6 +294,257 @@
       load();
     }
     setTimeout(load, 8000); // load anyway after first paint settles
+  }
+
+  /* ---------- Own booking system (Google Apps Script backend) ---------- */
+  function initOwnBooking(root) {
+    var API = data.bookingApi;
+    var services = data.services || [];
+    var barbers = data.barbers || [];
+    var st = { step: 1, service: null, barber: null, date: null, time: null, days: null };
+    var esc = function (v) {
+      return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    };
+    var WD = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"];
+    var WDL = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+    var MO = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+    var MOL = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    function parts(d) { var p = d.split("-"); return { y: +p[0], m: +p[1], d: +p[2], wd: new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])).getUTCDay() }; }
+    function pretty(d) { var p = parts(d); return WDL[p.wd] + " " + p.d + " de " + MOL[p.m - 1]; }
+    function svc() { for (var i = 0; i < services.length; i++) if (services[i].id === st.service) return services[i]; return null; }
+    function barberName(id) { if (!id || id === "any") return "Cualquiera"; for (var i = 0; i < barbers.length; i++) if (barbers[i].id === id) return barbers[i].name; return id; }
+
+    function api(params, body) {
+      var url = API + (API.indexOf("?") > -1 ? "&" : "?") + Object.keys(params).map(function (k) {
+        return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+      }).join("&");
+      // text/plain POST = "simple" request, no CORS preflight (Apps Script can't answer one)
+      var opts = body ? { method: "POST", body: JSON.stringify(body) } : {};
+      return fetch(body ? API : url, opts).then(function (r) { return r.json(); });
+    }
+
+    function stepsBar() {
+      var names = ["Servicio", "Barbero", "Día y hora", "Tus datos"];
+      return '<ol class="bk-steps mono">' + names.map(function (n, i) {
+        var k = i + 1, cls = k === st.step ? "is-on" : (k < st.step ? "is-done" : "");
+        return '<li class="' + cls + '"><span>' + k + "</span>" + n + "</li>";
+      }).join("") + "</ol>";
+    }
+    function summary() {
+      var s = svc(), bits = [];
+      if (s) bits.push(esc(s.name));
+      if (st.barber && st.step > 2) bits.push(esc(barberName(st.barber)));
+      if (st.date && st.time && st.step > 3) bits.push(pretty(st.date) + " · " + st.time);
+      if (!bits.length) return "";
+      return '<div class="bk-summary"><button type="button" class="bk-back mono" data-back>← Atrás</button><p>' + bits.join(' <i>/</i> ') + "</p></div>";
+    }
+    function render(inner) {
+      root.innerHTML = stepsBar() + summary() + '<div class="bk-body">' + inner + "</div>";
+      var back = $("[data-back]", root);
+      if (back) back.addEventListener("click", function () { go(st.step - 1); });
+    }
+    function go(step) {
+      st.step = Math.max(1, step);
+      if (st.step === 1) return renderServices();
+      if (st.step === 2) return renderBarbers();
+      if (st.step === 3) return renderDays();
+      if (st.step === 4) return renderForm();
+    }
+    function scrollTop() {
+      var r = root.getBoundingClientRect();
+      if (r.top < 60 || r.top > window.innerHeight * 0.6) window.scrollTo(0, r.top + window.scrollY - 90);
+    }
+
+    function renderServices() {
+      render('<h3 class="bk-h">¿Qué te hacemos?</h3><div class="bk-grid">' + services.map(function (s) {
+        return '<button type="button" class="bk-opt' + (st.service === s.id ? " is-sel" : "") + '" data-svc="' + esc(s.id) + '">' +
+          '<span class="bk-opt-name">' + esc(s.name) + (s.popular ? ' <em class="tag mono">Popular</em>' : "") + "</span>" +
+          '<span class="bk-opt-meta mono">' + s.min + " min" + (s.drink ? " · bebida incluida" : "") + "</span>" +
+          '<span class="bk-opt-price">' + s.price + " €</span></button>";
+      }).join("") + "</div>");
+      $$("[data-svc]", root).forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (st.service !== b.dataset.svc) { st.days = null; st.date = null; st.time = null; }
+          st.service = b.dataset.svc; go(2); scrollTop();
+        });
+      });
+    }
+
+    function renderBarbers() {
+      var list = [{ id: "any", name: "Cualquiera", sub: "El primero libre" }].concat(barbers.map(function (b) { return { id: b.id, name: b.name, sub: "Barbero" }; }));
+      render('<h3 class="bk-h">¿Con quién?</h3><div class="bk-grid bk-grid-4">' + list.map(function (b) {
+        return '<button type="button" class="bk-opt bk-barber' + (st.barber === b.id ? " is-sel" : "") + '" data-barber="' + esc(b.id) + '">' +
+          '<span class="bk-opt-name">' + esc(b.name) + '</span><span class="bk-opt-meta mono">' + esc(b.sub) + "</span></button>";
+      }).join("") + "</div>");
+      $$("[data-barber]", root).forEach(function (b) {
+        b.addEventListener("click", function () {
+          if (st.barber !== b.dataset.barber) { st.days = null; st.date = null; st.time = null; }
+          st.barber = b.dataset.barber; go(3); scrollTop();
+        });
+      });
+    }
+
+    function loading(msg) { return '<div class="bk-loading"><span class="booking-spinner"></span><p class="mono">' + esc(msg) + "</p></div>"; }
+    function errorBox(msg, retry) {
+      return '<div class="bk-error"><p>' + esc(msg) + "</p>" + (retry ? '<button type="button" class="btn btn-ghost btn-sm" data-retry>Reintentar</button>' : "") + "</div>";
+    }
+
+    function renderDays() {
+      if (!st.days) {
+        render('<h3 class="bk-h">¿Qué día?</h3>' + loading("Buscando huecos libres…"));
+        api({ action: "days", service: st.service, barber: st.barber }).then(function (r) {
+          if (!r.ok) throw new Error(r.error || "Error");
+          st.days = r.days;
+          if (!st.date) { for (var i = 0; i < r.days.length; i++) if (r.days[i].free) { st.date = r.days[i].date; break; } }
+          renderDays();
+        }).catch(function () {
+          render('<h3 class="bk-h">¿Qué día?</h3>' + errorBox("No hemos podido cargar la agenda. Revisa tu conexión.", true));
+          var b = $("[data-retry]", root); if (b) b.addEventListener("click", renderDays);
+        });
+        return;
+      }
+      var strip = st.days.map(function (d) {
+        var p = parts(d.date), off = !d.free;
+        return '<button type="button" class="bk-day' + (st.date === d.date ? " is-sel" : "") + '"' + (off ? " disabled" : "") + ' data-date="' + d.date + '">' +
+          '<span class="mono">' + WD[p.wd] + "</span><b>" + p.d + '</b><span class="mono">' + MO[p.m - 1] + "</span></button>";
+      }).join("");
+      var anyFree = st.days.some(function (d) { return d.free; });
+      render('<h3 class="bk-h">¿Qué día?</h3><div class="bk-days" data-days>' + strip + "</div>" +
+        (anyFree ? '<h3 class="bk-h bk-h-sm">Hora</h3><div class="bk-slots" data-slots>' + loading("Cargando horas…") + "</div>"
+                 : errorBox("No quedan huecos en las próximas semanas con esta elección. Prueba con «Cualquiera».", false)));
+      $$("[data-date]", root).forEach(function (b) {
+        b.addEventListener("click", function () {
+          st.date = b.dataset.date; st.time = null;
+          $$("[data-date]", root).forEach(function (x) { x.classList.toggle("is-sel", x === b); });
+          loadSlots();
+        });
+      });
+      var sel = $(".bk-day.is-sel", root);
+      if (sel && sel.scrollIntoView) { var strip2 = $("[data-days]", root); strip2.scrollLeft = sel.offsetLeft - 16; }
+      if (anyFree && st.date) loadSlots();
+    }
+
+    function loadSlots() {
+      var box = $("[data-slots]", root);
+      if (!box) return;
+      box.innerHTML = loading("Cargando horas…");
+      var want = st.date;
+      api({ action: "slots", date: st.date, service: st.service, barber: st.barber }).then(function (r) {
+        if (want !== st.date) return;
+        if (!r.ok) throw new Error(r.error || "Error");
+        if (!r.slots.length) { box.innerHTML = '<p class="bk-empty">No quedan horas libres este día.</p>'; return; }
+        var groups = { "Mañana": [], "Tarde": [] };
+        r.slots.forEach(function (t) { (parseInt(t, 10) < 15 ? groups["Mañana"] : groups["Tarde"]).push(t); });
+        box.innerHTML = Object.keys(groups).filter(function (g) { return groups[g].length; }).map(function (g) {
+          return '<p class="bk-group mono">' + g + '</p><div class="bk-times">' + groups[g].map(function (t) {
+            return '<button type="button" class="bk-time" data-time="' + t + '">' + t + "</button>";
+          }).join("") + "</div>";
+        }).join("");
+        $$("[data-time]", box).forEach(function (b) {
+          b.addEventListener("click", function () { st.time = b.dataset.time; go(4); scrollTop(); });
+        });
+      }).catch(function () {
+        box.innerHTML = errorBox("No hemos podido cargar las horas.", true);
+        var b = $("[data-retry]", box); if (b) b.addEventListener("click", loadSlots);
+      });
+    }
+
+    function renderForm(err) {
+      var s = svc();
+      render('<h3 class="bk-h">Tus datos</h3>' +
+        '<div class="bk-ticket"><div><span class="mono">Servicio</span><b>' + esc(s.name) + "</b></div>" +
+        "<div><span class=\"mono\">Barbero</span><b>" + esc(barberName(st.barber)) + "</b></div>" +
+        "<div><span class=\"mono\">Cuándo</span><b>" + pretty(st.date) + " · " + st.time + "</b></div>" +
+        "<div><span class=\"mono\">Precio</span><b>" + s.price + " € · " + s.min + " min</b></div></div>" +
+        '<form class="bk-form" novalidate>' +
+        '<label><span class="mono">Nombre *</span><input name="name" autocomplete="name" required maxlength="60"></label>' +
+        '<label><span class="mono">Teléfono *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required maxlength="20"></label>' +
+        '<label class="bk-wide"><span class="mono">Email (para recibir la confirmación)</span><input name="email" type="email" inputmode="email" autocomplete="email" maxlength="80"></label>' +
+        '<label class="bk-wide"><span class="mono">Notas (opcional)</span><input name="notes" maxlength="200" placeholder="Ej.: degradado bajo, traigo foto…"></label>' +
+        '<label class="bk-hp" aria-hidden="true">Web<input name="website" tabindex="-1" autocomplete="off"></label>' +
+        '<label class="bk-check bk-wide"><input type="checkbox" name="consent"><span>Acepto que Flow Barber use estos datos solo para gestionar mi cita.</span></label>' +
+        (err ? '<p class="bk-form-err bk-wide" role="alert">' + esc(err) + "</p>" : "") +
+        '<button class="btn btn-gold bk-wide bk-submit" type="submit"><span>Confirmar cita</span></button>' +
+        "</form>");
+      var form = $(".bk-form", root);
+      ["name", "phone", "email", "notes"].forEach(function (k) { if (st.form && st.form[k]) form[k].value = st.form[k]; });
+      if (st.form && st.form.consent) form.consent.checked = true;
+      form.addEventListener("input", function () { var e = $(".bk-form-err", form); if (e) e.remove(); });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var v = { name: form.name.value.trim(), phone: form.phone.value.trim(), email: form.email.value.trim(), notes: form.notes.value.trim(), website: form.website.value, consent: form.consent.checked };
+        st.form = v;
+        var msg = v.name.length < 2 ? "Escribe tu nombre." :
+                  v.phone.replace(/\D/g, "").length < 9 ? "Escribe un teléfono válido." :
+                  (v.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email)) ? "Revisa el email." :
+                  !v.consent ? "Marca la casilla para poder reservar." : "";
+        if (msg) { renderForm(msg); return; }
+        var btn = $(".bk-submit", root);
+        btn.disabled = true; btn.querySelector("span").textContent = "Reservando…";
+        api({}, { action: "book", service: st.service, barber: st.barber, date: st.date, time: st.time,
+                  name: v.name, phone: v.phone, email: v.email, notes: v.notes, website: v.website, consent: v.consent })
+          .then(function (r) {
+            if (r.ok) return renderDone(r.booking, !!v.email);
+            if (r.taken) { st.days = null; st.time = null; go(3); toast(r.error); return; }
+            renderForm(r.error || "No se ha podido reservar.");
+          })
+          .catch(function () { renderForm("Sin conexión con la agenda. Inténtalo de nuevo."); });
+      });
+    }
+
+    function toast(msg) {
+      var b = $(".bk-body", root);
+      if (b) b.insertAdjacentHTML("afterbegin", '<p class="bk-toast" role="alert">' + esc(msg) + "</p>");
+    }
+
+    function gcalLink(bk) {
+      var d = bk.date.replace(/-/g, ""), a = bk.time.replace(":", "") + "00", b = bk.end.replace(":", "") + "00";
+      return "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent(bk.service + " · Flow Barber") +
+        "&dates=" + d + "T" + a + "/" + d + "T" + b + "&ctz=Europe/Madrid&location=" + encodeURIComponent(data.address || "") +
+        "&details=" + encodeURIComponent("Reserva " + bk.id + " con " + bk.barber);
+    }
+
+    function renderDone(bk, mailed) {
+      st.step = 5;
+      root.innerHTML = '<div class="bk-done"><div class="bk-check-ico" aria-hidden="true">✓</div>' +
+        '<p class="kicker mono">Cita confirmada</p><h3 class="bk-done-title">Nos vemos el ' + pretty(bk.date) + " a las " + esc(bk.time) + "</h3>" +
+        '<div class="bk-ticket"><div><span class="mono">Servicio</span><b>' + esc(bk.service) + "</b></div>" +
+        '<div><span class="mono">Barbero</span><b>' + esc(bk.barber) + "</b></div>" +
+        '<div><span class="mono">Precio</span><b>' + bk.price + " € · pago en el local</b></div>" +
+        '<div><span class="mono">Reserva</span><b>' + esc(bk.id) + "</b></div></div>" +
+        '<p class="bk-done-note">' + (mailed ? "Te hemos enviado un email con los detalles y un enlace para cancelar." : "Guarda el número de reserva. Si no puedes venir, avisa a la barbería.") + "</p>" +
+        '<div class="bk-done-ctas"><a class="btn btn-gold" href="' + gcalLink(bk) + '" target="_blank" rel="noopener"><span>Añadir a mi calendario</span></a>' +
+        '<button type="button" class="btn btn-ghost" data-again><span>Hacer otra reserva</span></button></div></div>';
+      $("[data-again]", root).addEventListener("click", function () { st = { step: 1, form: st.form }; go(1); });
+      scrollTop();
+    }
+
+    function renderCancel(id, code) {
+      root.innerHTML = '<div class="bk-done"><p class="kicker mono">Cancelar cita</p><h3 class="bk-done-title">¿Quieres cancelar la reserva ' + esc(id) + '?</h3>' +
+        '<div class="bk-done-ctas"><button type="button" class="btn btn-gold" data-do-cancel><span>Sí, cancelar</span></button>' +
+        '<button type="button" class="btn btn-ghost" data-keep><span>No, mantenerla</span></button></div></div>';
+      $("[data-keep]", root).addEventListener("click", function () { history.replaceState(null, "", location.pathname + "#reservar"); go(1); });
+      $("[data-do-cancel]", root).addEventListener("click", function () {
+        root.innerHTML = loading("Cancelando…");
+        api({ action: "cancel", id: id, code: code }).then(function (r) {
+          history.replaceState(null, "", location.pathname + "#reservar");
+          root.innerHTML = '<div class="bk-done"><p class="kicker mono">' + (r.ok ? "Cita cancelada" : "No se ha podido cancelar") + '</p>' +
+            '<h3 class="bk-done-title">' + (r.ok ? "Hecho. Tu hueco queda libre para otro cliente." : esc(r.error || "Error")) + "</h3>" +
+            '<div class="bk-done-ctas"><button type="button" class="btn btn-gold" data-again><span>Reservar otra hora</span></button></div></div>';
+          $("[data-again]", root).addEventListener("click", function () { go(1); });
+        }).catch(function () { root.innerHTML = errorBox("Sin conexión. Inténtalo de nuevo desde el enlace del email.", false); });
+      });
+    }
+
+    var q = new URLSearchParams(location.search);
+    if (q.get("cancelar") && q.get("c")) {
+      renderCancel(q.get("cancelar"), q.get("c"));
+      setTimeout(function () { var r = root.getBoundingClientRect(); window.scrollTo(0, r.top + window.scrollY - 90); }, 1200);
+    } else {
+      go(1);
+    }
   }
 
   /* ---------- GSAP: studio parallax + final CTA ---------- */
