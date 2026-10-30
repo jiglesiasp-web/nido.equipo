@@ -245,55 +245,21 @@
     });
   }
 
-  /* ---------- Booksy booking widget (inline, lazy) ---------- */
+  /* ---------- Booking: own platform ---------- */
   function initBooking() {
-    var own = $("[data-booking]");
-    if (own && data.bookingApi) {
-      var frame = $("[data-booksy]"), noteB = $("[data-note-booksy]"), noteO = $("[data-note-own]");
-      if (frame) frame.remove();
-      if (noteB) noteB.hidden = true;
-      if (noteO) noteO.hidden = false;
-      own.hidden = false;
-      initOwnBooking(own);
-      return;
-    }
-    var box = $("[data-booksy]");
-    if (!box) return;
-    var loaded = false;
-    function load() {
-      if (loaded) return;
-      loaded = true;
-      var s = document.createElement("script");
-      s.src = "https://booksy.com/widget/code.js?id=" + (box.dataset.booksyId || "153876") + "&country=es&lang=es&mode=inline";
-      s.async = true;
-      s.onerror = function () { box.classList.add("is-error"); };
-      box.appendChild(s);
-      // hide the loader once the iframe has loaded (or after 12s at worst)
-      var t0 = Date.now();
-      (function wait() {
-        var f = box.querySelector("iframe");
-        if (f) {
-          f.removeAttribute("width");
-          f.setAttribute("title", "Reserva de cita en Flow Barber (Booksy)");
-          f.addEventListener("load", function () { box.classList.add("is-loaded"); });
-          setTimeout(function () { box.classList.add("is-loaded"); }, 6000);
-          return;
-        }
-        if (Date.now() - t0 < 12000) setTimeout(wait, 150);
-        else box.classList.add("is-loaded");
-      })();
-    }
-    $$('a[href="#reservar"]').forEach(function (a) { a.addEventListener("click", load); });
-    if (location.hash === "#reservar") load();
-    if ("IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function (entries) {
-        if (entries.some(function (e) { return e.isIntersecting; })) { load(); io.disconnect(); }
-      }, { rootMargin: "900px 0px" });
-      io.observe(box);
-    } else {
-      load();
-    }
-    setTimeout(load, 8000); // load anyway after first paint settles
+    var root = $("[data-booking]");
+    if (!root) return;
+    root.hidden = false;
+    if (data.bookingApi) { initOwnBooking(root); return; }
+    // Backend not connected yet (see reservas/INSTALAR.md): say so plainly, never fake a booking.
+    root.innerHTML = '<div class="bk-done bk-soon">' +
+      '<span class="booking-spinner" aria-hidden="true"></span>' +
+      '<p class="kicker mono">Agenda online en activación</p>' +
+      '<h3 class="bk-done-title">Muy pronto podrás reservar tu hora aquí mismo</h3>' +
+      '<p class="bk-done-note">Mientras tanto, pásate por la barbería: Av. del Montgó 26, Dénia.<br>Lunes a sábado, 10:00–14:00 y 16:00–20:00.</p>' +
+      '<div class="bk-done-ctas"><a class="btn btn-ghost" href="' + (data.instagram || "#") + '" target="_blank" rel="noopener"><span>Escríbenos por Instagram</span></a></div></div>';
+    var live = $(".booking-live");
+    if (live) live.lastChild.textContent = "Agenda en activación";
   }
 
   /* ---------- Own booking system (Google Apps Script backend) ---------- */

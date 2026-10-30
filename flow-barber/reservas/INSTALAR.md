@@ -1,4 +1,4 @@
-# Activar las reservas propias de Flow Barber (sin Booksy)
+# Activar las reservas propias de Flow Barber
 
 Tiempo: unos 10 minutos. Coste: 0 €. Hace falta una cuenta de Google (Gmail) de la barbería.
 Es mucho más cómodo hacerlo **desde un ordenador**.
@@ -50,7 +50,7 @@ Envía esa URL a quien mantiene la web (o a Claude). Se pega en `lib/manifest.js
 bookingApi: "",
 ```
 
-Desde ese momento la web deja de mostrar Booksy y usa vuestro sistema.
+Desde ese momento la sección de reservas de la web pasa de "Agenda online en activación" a aceptar citas.
 
 ---
 

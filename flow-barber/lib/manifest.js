@@ -1,15 +1,14 @@
-/* Datos de marca. Fuente: perfil público de Flow Barber en Booksy (octubre 2026). */
+/* Datos de la barbería: servicios, horario y conexión con el sistema de reservas propio. */
 (function () {
   "use strict";
   window.__BRAND__ = {
     name: "Flow Barber",
-    booking: "https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat",
     instagram: "https://www.instagram.com/flow_barber25/",
     address: "Avinguda del Montgó, 26, 03700 Dénia",
     timezone: "Europe/Madrid",
 
     // URL de la aplicación web de Google Apps Script (ver reservas/INSTALAR.md).
-    // Vacío = se muestra el widget de Booksy mientras tanto.
+    // Vacío = la sección de reservas muestra "Agenda online en activación".
     bookingApi: "",
 
     // Deben coincidir con CONFIG.services / CONFIG.barbers de reservas/Code.gs

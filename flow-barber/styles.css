@@ -509,7 +509,7 @@ html.is-deep .layer-scrim { background: rgba(5,4,3,.55); }
   .scan { animation: none; opacity: 0; }
 }
 
-/* ---------- booking (Booksy widget, inline) ---------- */
+/* ---------- booking card ---------- */
 .final { padding-bottom: clamp(80px, 10vw, 140px); grid-template-columns: minmax(0, 1fr); }
 .booking, .bk { min-width: 0; max-width: 100%; }
 .final-cta { margin: 0; }
@@ -530,26 +530,13 @@ html.is-deep .layer-scrim { background: rgba(5,4,3,.55); }
 }
 .booking-live { display: inline-flex; align-items: center; gap: 8px; }
 .booking-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); animation: ping 1.8s infinite; }
-.booking-frame {
-  position: relative; border-radius: 18px; overflow: hidden;
-  background: #fff; min-height: 660px;
-}
-.booking-frame .booksy-widget-container,
-.booking-frame iframe { display: block; width: 100% !important; max-width: 100% !important; border: 0; }
-.booking-frame iframe { min-height: 660px; }
-.booking-loading {
-  position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 14px;
-  background: var(--panel-solid); color: var(--ink-2); z-index: 2; transition: opacity .5s var(--ease-out);
-}
-.booking-frame.is-loaded .booking-loading { opacity: 0; pointer-events: none; }
-.booking-loading p { margin: 0; }
 .booking-spinner { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--line); border-top-color: var(--gold); animation: spin 1s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
+.bk-soon .booking-spinner { margin-bottom: 18px; }
 .booking-note { margin: 14px 8px 6px; font-size: .84rem; line-height: 1.5; color: var(--ink-2); }
 .booking-note a { color: var(--gold-2); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 640px) {
   .booking { padding: 6px; border-radius: 20px; margin-inline: -6px; width: calc(100% + 12px); }
-  .booking-frame { border-radius: 14px; }
   .booking-bar span:last-child { display: none; }
 }
 
