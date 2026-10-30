@@ -21,7 +21,9 @@ Cuando termines tendrás:
 1. En la hoja, menú **Extensiones → Apps Script**.
 2. Se abre un editor con un archivo `Código.gs`. **Borra todo** lo que haya.
 3. Abre el archivo [`Code.gs`](./Code.gs) de esta carpeta, copia **todo** su contenido y pégalo en el editor.
-4. Pulsa el icono de **guardar** (disquete).
+4. Busca la línea `adminPassword: "",` y escribe entre las comillas la **contraseña del panel del dueño**
+   (larga, que no uses en otro sitio). Ejemplo: `adminPassword: "Tijeras-Doradas-Montgo-26",`
+5. Pulsa el icono de **guardar** (disquete).
 
 ## 3. Prepara la hoja (una sola vez)
 
@@ -54,7 +56,18 @@ Desde ese momento la sección de reservas de la web pasa de "Agenda online en ac
 
 ---
 
-## Uso diario
+## Panel del dueño
+
+Abre **https://jiglesiasp-web.github.io/flow-barber/admin.html** (guárdalo en favoritos o en la pantalla de inicio del móvil) y entra con la contraseña de `adminPassword`.
+
+- **Agenda:** las citas del día con nombre, teléfono, servicio y barbero. Botones para llamar o escribir por WhatsApp, y para marcar *Hecha*, *No vino* o *Cancelar* (con aviso por email al cliente si dejó email).
+- **Próximas:** todas las citas confirmadas de los próximos 30 días.
+- **Nueva cita:** para clientes que llaman o pasan por la barbería. Así esa hora deja de ofrecerse en la web.
+- **Cierres:** cerrar un día entero o unas horas, para toda la barbería o para un barbero.
+
+Seguridad: los datos de los clientes solo se envían a quien tenga la contraseña. Tras 10 intentos fallidos el panel se bloquea 10 minutos. Si alguien la descubre, cámbiala en `Code.gs` y publica una nueva versión (ver "Cambiar precios…").
+
+## Uso diario (también desde la hoja)
 
 - **Ver citas:** en el Google Calendar de la cuenta, o en la pestaña **Reservas** de la hoja.
 - **Que los barberos vean la agenda:** en Google Calendar → tu calendario → *Configuración y uso compartido* → *Compartir con personas* → añade su email.

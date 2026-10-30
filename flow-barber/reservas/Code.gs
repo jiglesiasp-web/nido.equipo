@@ -17,6 +17,10 @@ var CONFIG = {
   // Email que recibe el aviso de cada reserva. Vacío = el de la cuenta que instala el script.
   notifyEmail: "",
 
+  // Contraseña del panel del dueño (admin.html). Pon una larga y que no uses en otro sitio.
+  // Vacía = panel desactivado.
+  adminPassword: "",
+
   // Crear un evento en Google Calendar por cada cita (true / false)
   useCalendar: true,
 
@@ -111,6 +115,7 @@ function doPost(e) {
   try {
     var body = JSON.parse((e && e.postData && e.postData.contents) || "{}");
     if (body.action === "book") return json_(book_(body));
+    if (body.action === "admin") return json_(admin_(body));
     return json_({ ok: false, error: "Acción no válida" });
   } catch (err) {
     return json_({ ok: false, error: String(err && err.message || err) });
@@ -171,7 +176,7 @@ function busy_(dateStr) {
   if (sh && sh.getLastRow() > 1) {
     var rows = sh.getRange(2, 1, sh.getLastRow() - 1, HEADERS.length).getValues();
     rows.forEach(function (r) {
-      if (cellText_(r[COL["Estado"]], "") !== "Confirmada") return;
+      if (cellText_(r[COL["Estado"]], "") === "Cancelada") return;
       if (cellText_(r[COL["Fecha"]], "yyyy-MM-dd") !== dateStr) return;
       var b = barber_(cellText_(r[COL["Barbero"]], "").toLowerCase()) || barberByName_(cellText_(r[COL["Barbero"]], ""));
       if (!b) return;
@@ -204,12 +209,12 @@ function overlaps_(list, a, b) {
 }
 
 /** Devuelve [{ time: "10:15", barbers: ["pool","gio"] }, ...] */
-function computeSlots_(dateStr, svc, barberId) {
+function computeSlots_(dateStr, svc, barberId, ignoreNotice) {
   var shifts = CONFIG.hours[weekday_(dateStr)] || [];
   if (!shifts.length) return [];
   var busy = busy_(dateStr);
   var now = now_();
-  var minStart = dateStr === now.date ? now.min + CONFIG.minNoticeMin : -1;
+  var minStart = dateStr === now.date && !ignoreNotice ? now.min + CONFIG.minNoticeMin : -1;
   var candidates = barberId && barberId !== "any" ? [barberId] : CONFIG.barbers.map(function (b) { return b.id; });
   var slots = [];
   shifts.forEach(function (s) {
@@ -250,15 +255,20 @@ function clean_(s, max) { return String(s == null ? "" : s).replace(/[\u0000-\u0
 
 function book_(b) {
   if (b.website) return { ok: false, error: "Solicitud no válida" }; // honeypot anti-bots
+  return createBooking_(b, false);
+}
+
+/** admin = true: reserva hecha por el dueño (teléfono / en persona) */
+function createBooking_(b, admin) {
   var svc = service_(b.service);
   if (!svc) return { ok: false, error: "Servicio no válido" };
   if (!validDate_(b.date)) return { ok: false, error: "Fecha fuera de rango" };
-  if (!/^\d{2}:\d{2}$/.test(String(b.time || ""))) return { ok: false, error: "Hora no válida" };
+  if (!/^\d{2}:\d{2}$/.test(String(b.time || "")) || toMin_(b.time) >= 24 * 60 || toMin_(b.time) % 5) return { ok: false, error: "Hora no válida" };
   var name = clean_(b.name, 60), phone = clean_(b.phone, 20).replace(/[^\d+ ]/g, ""), email = clean_(b.email, 80), notes = clean_(b.notes, 200);
   if (name.length < 2) return { ok: false, error: "Escribe tu nombre" };
-  if (phone.replace(/\D/g, "").length < 9) return { ok: false, error: "Teléfono no válido" };
+  if ((!admin || phone) && phone.replace(/\D/g, "").length < 9) return { ok: false, error: "Teléfono no válido" };
   if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "Email no válido" };
-  if (!b.consent) return { ok: false, error: "Falta aceptar el uso de datos" };
+  if (!admin && !b.consent) return { ok: false, error: "Falta aceptar el uso de datos" };
 
   var lock = LockService.getScriptLock();
   if (!lock.tryLock(15000)) return { ok: false, error: "Mucho tráfico, inténtalo de nuevo" };
@@ -269,7 +279,7 @@ function book_(b) {
 
     // anti-spam: citas futuras con este teléfono
     var today = now_().date, digits = phone.replace(/\D/g, "");
-    if (sh.getLastRow() > 1) {
+    if (!admin && sh.getLastRow() > 1) {
       var active = sh.getRange(2, 1, sh.getLastRow() - 1, HEADERS.length).getValues().filter(function (r) {
         return cellText_(r[COL["Estado"]], "") === "Confirmada" &&
                cellText_(r[COL["Fecha"]], "yyyy-MM-dd") >= today &&
@@ -278,8 +288,9 @@ function book_(b) {
       if (active >= CONFIG.maxActivePerPhone) return { ok: false, error: "Ya tienes " + active + " citas pendientes con este teléfono" };
     }
 
-    var slot = computeSlots_(b.date, svc, b.barber).filter(function (s) { return s.time === b.time; })[0];
-    if (!slot) return { ok: false, error: "Esa hora acaba de ocuparse. Elige otra.", taken: true };
+    var slot = computeSlots_(b.date, svc, b.barber, admin).filter(function (s) { return s.time === b.time; })[0];
+    if (!slot && admin && b.force && barber_(b.barber)) slot = { time: b.time, barbers: [b.barber] }; // el dueño fuerza la hora
+    if (!slot) return { ok: false, error: admin ? "Ese hueco no está libre (o está fuera de horario). Marca «Forzar» si quieres apuntarla igual." : "Esa hora acaba de ocuparse. Elige otra.", taken: true };
 
     // "Cualquiera": el barbero libre con menos citas ese día
     var barberId = slot.barbers[0];
@@ -326,7 +337,7 @@ function book_(b) {
     SpreadsheetApp.flush();
 
     var booking = { id: id, date: b.date, time: b.time, end: endHHMM, service: svc.name, price: svc.price, minutes: svc.min, barber: barber.name, name: name };
-    notify_(booking, phone, email, notes, code);
+    notify_(booking, phone, email, notes, code, admin);
     return { ok: true, booking: booking };
   } finally {
     lock.releaseLock();
@@ -375,10 +386,10 @@ function prettyDate_(dateStr) {
   return days[weekday_(dateStr)] + " " + (+p[2]) + " de " + months[+p[1] - 1];
 }
 
-function notify_(bk, phone, email, notes, code) {
+function notify_(bk, phone, email, notes, code, byOwner) {
   var when = prettyDate_(bk.date) + " a las " + bk.time;
   var cancelUrl = CONFIG.siteUrl + "?cancelar=" + encodeURIComponent(bk.id) + "&c=" + code + "#reservar";
-  try {
+  if (!byOwner) try {
     MailApp.sendEmail(ownerEmail_(), "Nueva cita: " + bk.date + " " + bk.time + " · " + bk.name + " (" + bk.barber + ")",
       "Nueva reserva desde la web\n\n" +
       "Cliente: " + bk.name + "\nTeléfono: " + phone + (email ? "\nEmail: " + email : "") +
@@ -397,4 +408,134 @@ function notify_(bk, phone, email, notes, code) {
             CONFIG.address + "\n\nSi no puedes venir, cancela aquí:\n" + cancelUrl + "\n\nGracias,\n" + CONFIG.shopName
     });
   } catch (err) {}
+}
+
+/* ================================================================
+   6. PANEL DEL DUEÑO (admin.html)
+   ================================================================ */
+var STATUSES = ["Confirmada", "Completada", "No vino", "Cancelada"];
+
+function admin_(b) {
+  if (!CONFIG.adminPassword) return { ok: false, error: "Panel desactivado: pon una contraseña en CONFIG.adminPassword", code: "disabled" };
+  if (b.op === "login") return adminLogin_(b.password, b.remember);
+  if (!validToken_(b.token)) return { ok: false, error: "Sesión caducada. Vuelve a entrar.", code: "auth" };
+  switch (b.op) {
+    case "list": return adminList_(b.from, b.to);
+    case "status": return adminStatus_(b.id, b.status, b.notify);
+    case "create": return createBooking_(b, true);
+    case "block": return adminBlock_(b);
+    case "unblock": return adminUnblock_(b.row, b.date);
+    case "logout": PropertiesService.getScriptProperties().deleteProperty("tok_" + b.token); return { ok: true };
+  }
+  return { ok: false, error: "Operación no válida" };
+}
+
+function adminLogin_(password, remember) {
+  var cache = CacheService.getScriptCache();
+  var fails = +(cache.get("admin_fails") || 0);
+  if (fails >= 10) return { ok: false, error: "Demasiados intentos. Espera 10 minutos.", code: "locked" };
+  if (!safeEqual_(String(password || ""), String(CONFIG.adminPassword))) {
+    cache.put("admin_fails", String(fails + 1), 600);
+    Utilities.sleep(800);
+    return { ok: false, error: "Contraseña incorrecta", code: "auth" };
+  }
+  cache.remove("admin_fails");
+  var props = PropertiesService.getScriptProperties(), now = Date.now();
+  var all = props.getProperties();
+  Object.keys(all).forEach(function (k) { if (k.indexOf("tok_") === 0 && +all[k] < now) props.deleteProperty(k); });
+  var token = Utilities.getUuid().replace(/-/g, "") + Utilities.getUuid().replace(/-/g, "");
+  var ttl = (remember ? 30 : 1) * 86400000;
+  props.setProperty("tok_" + token, String(now + ttl));
+  return { ok: true, token: token, expires: now + ttl, barbers: CONFIG.barbers, services: CONFIG.services };
+}
+function safeEqual_(a, b) {
+  var diff = a.length ^ b.length;
+  for (var i = 0; i < Math.max(a.length, b.length); i++) diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  return diff === 0;
+}
+function validToken_(token) {
+  if (!token || !/^[a-f0-9]{64}$/.test(token)) return false;
+  var exp = PropertiesService.getScriptProperties().getProperty("tok_" + token);
+  return !!exp && +exp > Date.now();
+}
+
+function rowToBooking_(r, i) {
+  return {
+    row: i + 2, id: String(r[COL["ID"]]), created: cellText_(r[COL["Creada"]], "yyyy-MM-dd HH:mm"),
+    status: String(r[COL["Estado"]]), date: cellText_(r[COL["Fecha"]], "yyyy-MM-dd"),
+    time: cellText_(r[COL["Hora"]], "HH:mm"), end: cellText_(r[COL["Fin"]], "HH:mm"),
+    service: String(r[COL["Servicio"]]), minutes: +r[COL["Minutos"]] || 0, price: +r[COL["Precio €"]] || 0,
+    barber: String(r[COL["Barbero"]]), name: String(r[COL["Nombre"]]), phone: cellText_(r[COL["Teléfono"]], ""),
+    email: String(r[COL["Email"]]), notes: String(r[COL["Notas"]])
+  };
+}
+
+function adminList_(from, to) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(from)) || !/^\d{4}-\d{2}-\d{2}$/.test(String(to))) return { ok: false, error: "Fechas no válidas" };
+  var ss = SpreadsheetApp.getActiveSpreadsheet(), out = [], blocks = [];
+  var sh = ss.getSheetByName(SHEET_BOOKINGS);
+  if (sh && sh.getLastRow() > 1) {
+    sh.getRange(2, 1, sh.getLastRow() - 1, HEADERS.length).getValues().forEach(function (r, i) {
+      var bk = rowToBooking_(r, i);
+      if (bk.id && bk.date >= from && bk.date <= to) out.push(bk);
+    });
+  }
+  var bl = ss.getSheetByName(SHEET_BLOCKS);
+  if (bl && bl.getLastRow() > 1) {
+    bl.getRange(2, 1, bl.getLastRow() - 1, 5).getValues().forEach(function (r, i) {
+      var d = cellText_(r[0], "yyyy-MM-dd");
+      if (d >= from && d <= to) blocks.push({ row: i + 2, date: d, from: cellText_(r[1], "HH:mm"), to: cellText_(r[2], "HH:mm"), barber: cellText_(r[3], ""), reason: String(r[4] || "") });
+    });
+  }
+  out.sort(function (a, b) { return (a.date + a.time).localeCompare(b.date + b.time); });
+  return { ok: true, bookings: out, blocks: blocks, today: now_().date };
+}
+
+function adminStatus_(id, status, notify) {
+  if (STATUSES.indexOf(status) < 0) return { ok: false, error: "Estado no válido" };
+  var lock = LockService.getScriptLock(); lock.tryLock(15000);
+  try {
+    var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_BOOKINGS);
+    var rows = sh.getLastRow() > 1 ? sh.getRange(2, 1, sh.getLastRow() - 1, HEADERS.length).getValues() : [];
+    for (var i = 0; i < rows.length; i++) {
+      if (String(rows[i][COL["ID"]]) !== String(id)) continue;
+      var r = rows[i], prev = String(r[COL["Estado"]]);
+      if (prev === "Cancelada" && status !== "Cancelada") return { ok: false, error: "Una cita cancelada no se puede reactivar: crea una nueva." };
+      sh.getRange(i + 2, COL["Estado"] + 1).setValue(status);
+      if (status === "Cancelada" && prev !== "Cancelada") {
+        if (r[COL["Evento"]]) { try { CalendarApp.getDefaultCalendar().getEventById(String(r[COL["Evento"]])).deleteEvent(); } catch (err) {} }
+        var email = String(r[COL["Email"]] || "");
+        if (notify && email) {
+          var d = cellText_(r[COL["Fecha"]], "yyyy-MM-dd"), t = cellText_(r[COL["Hora"]], "HH:mm");
+          try {
+            MailApp.sendEmail({ to: email, name: CONFIG.shopName, subject: "Tu cita en " + CONFIG.shopName + " ha sido cancelada",
+              body: "Hola " + r[COL["Nombre"]] + ",\n\nLa barbería ha tenido que cancelar tu cita del " + prettyDate_(d) + " a las " + t +
+                    " (" + r[COL["Servicio"]] + ").\nPerdona las molestias. Puedes reservar otra hora aquí:\n" + CONFIG.siteUrl + "#reservar\n\n" + CONFIG.shopName });
+          } catch (err) {}
+        }
+      }
+      return { ok: true, booking: rowToBooking_(sh.getRange(i + 2, 1, 1, HEADERS.length).getValues()[0], i) };
+    }
+    return { ok: false, error: "Reserva no encontrada" };
+  } finally { lock.releaseLock(); }
+}
+
+function adminBlock_(b) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(b.date || ""))) return { ok: false, error: "Fecha no válida" };
+  var from = String(b.from || ""), to = String(b.to || "");
+  if ((from && !/^\d{2}:\d{2}$/.test(from)) || (to && !/^\d{2}:\d{2}$/.test(to))) return { ok: false, error: "Hora no válida" };
+  if (from && to && toMin_(to) <= toMin_(from)) return { ok: false, error: "La hora final debe ser posterior" };
+  if (b.barber && !barber_(b.barber)) return { ok: false, error: "Barbero no válido" };
+  var bl = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_BLOCKS);
+  bl.appendRow([b.date, from, to, b.barber ? barber_(b.barber).name : "", clean_(b.reason, 80)]);
+  return { ok: true };
+}
+
+function adminUnblock_(row, date) {
+  var bl = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_BLOCKS);
+  row = +row;
+  if (!row || row < 2 || row > bl.getLastRow()) return { ok: false, error: "Bloqueo no encontrado" };
+  if (cellText_(bl.getRange(row, 1, 1, 1).getValues()[0][0], "yyyy-MM-dd") !== date) return { ok: false, error: "La hoja ha cambiado. Recarga." };
+  bl.deleteRow(row);
+  return { ok: true };
 }
