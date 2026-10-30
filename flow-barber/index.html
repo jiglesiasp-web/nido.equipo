@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Flow Barber · Barbería en Dénia</title>
+<meta name="description" content="Flow Barber, barbería en la Avinguda del Montgó 26, Dénia. Corte, barba, cejas y bebida de cortesía. 4,9 sobre 5 en 100 reseñas de Booksy. Reserva online.">
+<meta name="theme-color" content="#050403">
+<meta property="og:title" content="Flow Barber · Barbería en Dénia">
+<meta property="og:description" content="Corte limpio, barba y detalle en la Avinguda del Montgó 26, Dénia. Reserva online en Booksy.">
+<meta property="og:image" content="assets/img/logo.webp">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/img/logo.webp" type="image/webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;800&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="styles.css?v=20261030">
+<script>document.documentElement.classList.add("js");</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BarberShop",
+  "name": "Flow Barber",
+  "image": "assets/img/logo.webp",
+  "address": {"@type": "PostalAddress", "streetAddress": "Avinguda del Montgó, 26", "postalCode": "03700", "addressLocality": "Dénia", "addressRegion": "Comunidad Valenciana", "addressCountry": "ES"},
+  "geo": {"@type": "GeoCoordinates", "latitude": 38.83388846865661, "longitude": 0.10224818463785823},
+  "priceRange": "5 €–22 €",
+  "openingHoursSpecification": [
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "10:00", "closes": "14:00"},
+    {"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], "opens": "16:00", "closes": "20:00"}
+  ],
+  "sameAs": ["https://www.instagram.com/flow_barber25/", "https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat"]
+}
+</script>
+</head>
+<body>
+
+<!-- Splash: CSS hides it at 4.5s even if JS fails -->
+<div class="splash" data-splash aria-hidden="true">
+  <div class="splash-core">
+    <img src="assets/img/logo.webp" alt="" width="140" height="140">
+    <div class="splash-bar"><span></span></div>
+    <p class="mono splash-txt">INICIANDO SESIÓN · <span data-splash-count>000</span></p>
+  </div>
+</div>
+
+<!-- Fixed 3D scene + contrast layers -->
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="scene-fallback" aria-hidden="true"></div>
+<div class="layer-scrim" aria-hidden="true"></div>
+<div class="layer-vignette" aria-hidden="true"></div>
+<div class="layer-grid" aria-hidden="true"></div>
+<div class="layer-grain" aria-hidden="true"></div>
+
+<header class="nav" data-nav>
+  <a class="nav-logo" href="#top" aria-label="Flow Barber, inicio">
+    <img src="assets/img/logo.webp" alt="" width="44" height="44">
+    <span>FLOW<i>//</i>BARBER</span>
+  </a>
+  <nav class="nav-links" aria-label="Principal">
+    <a href="#servicios" data-scramble>Servicios</a>
+    <a href="#trabajos" data-scramble>Trabajos</a>
+    <a href="#equipo" data-scramble>Equipo</a>
+    <a href="#visita" data-scramble>Visítanos</a>
+  </nav>
+  <div class="nav-right">
+    <span class="status mono" data-status><i></i><b>Horario L–S</b></span>
+    <a class="btn btn-gold btn-sm" href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">Reservar</a>
+    <button class="nav-burger" type="button" aria-label="Abrir menú" aria-expanded="false" data-burger><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="menu" data-menu hidden>
+  <nav aria-label="Menú móvil">
+    <a href="#servicios">Servicios</a>
+    <a href="#trabajos">Trabajos</a>
+    <a href="#equipo">Equipo</a>
+    <a href="#visita">Visítanos</a>
+    <a href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener" class="menu-cta">Reservar en Booksy ↗</a>
+  </nav>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" data-stage="0">
+    <div class="hud hud-tl mono" aria-hidden="true">
+      <span>SYS/FLOW-BARBER</span>
+      <span>38.8339°N · 0.1022°E</span>
+    </div>
+    <div class="hero-inner">
+      <p class="kicker mono reveal">Barbería · Dénia · Av. del Montgó 26</p>
+      <h1 class="hero-title">
+        <span class="line"><span>Corte</span></span>
+        <span class="line"><span>limpio.</span></span>
+        <span class="line"><span><em>Flow</em> propio.</span></span>
+      </h1>
+      <p class="hero-lead reveal">Fades, barba y cejas con precisión milimétrica. Y en casi todos los servicios, la bebida va de cortesía.</p>
+      <div class="hero-ctas reveal">
+        <a class="btn btn-gold" data-magnetic href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">
+          <span>Reservar cita</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#servicios"><span>Ver servicios y precios</span></a>
+      </div>
+    </div>
+
+    <dl class="hero-stats reveal" aria-label="Valoraciones en Booksy">
+      <div><dt class="mono">Valoración Booksy</dt><dd><b data-count="4.9" data-decimals="1">4,9</b><small>/5</small></dd></div>
+      <div><dt class="mono">Reseñas</dt><dd><b data-count="100">100</b></dd></div>
+      <div><dt class="mono">Con 5 estrellas</dt><dd><b data-count="96">96</b><small>%</small></dd></div>
+    </dl>
+
+    <div class="scroll-cue mono" aria-hidden="true"><span></span>Scroll</div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Corte caballero</span><i>✦</i><span>Barba</span><i>✦</i><span>Cejas</span><i>✦</i><span>Rapado</span><i>✦</i><span>Mascarilla</span><i>✦</i><span>Niños</span><i>✦</i><span>Lavado</span><i>✦</i>
+      <span>Corte caballero</span><i>✦</i><span>Barba</span><i>✦</i><span>Cejas</span><i>✦</i><span>Rapado</span><i>✦</i><span>Mascarilla</span><i>✦</i><span>Niños</span><i>✦</i><span>Lavado</span><i>✦</i>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto" data-stage="1">
+    <p class="kicker mono reveal">01 — Manifiesto</p>
+    <p class="manifesto-text reveal">
+      Tres barberos y una sola idea: que salgas por la puerta con el corte <em>limpio</em>, la barba en su sitio y la sensación de haber estado en otro lugar. Sin prisas. Sin plantillas. Con el detalle que no se ve en la foto, pero se nota en el espejo.
+    </p>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="servicios" data-stage="2">
+    <header class="sec-head">
+      <p class="kicker mono reveal">02 — Servicios</p>
+      <h2 class="sec-title reveal">La carta</h2>
+      <p class="sec-sub reveal">Precios y duraciones tal como aparecen en Booksy. El vaso <span class="drink-ico" aria-hidden="true"></span> indica bebida de cortesía incluida.</p>
+    </header>
+
+    <div class="svc-groups">
+      <div class="svc-group reveal">
+        <h3 class="svc-group-title mono"><span>A</span>Cortes</h3>
+        <ul class="svc-list">
+          <li class="svc"><div class="svc-name">Corte caballero<span class="drink-ico" title="Bebida de cortesía"></span><em class="tag mono">Popular</em></div><div class="svc-meta mono">30 min</div><div class="svc-price">15 €</div></li>
+          <li class="svc"><div class="svc-name">Rapado<span class="drink-ico" title="Bebida de cortesía"></span></div><div class="svc-meta mono">30 min</div><div class="svc-price">15 €</div></li>
+          <li class="svc"><div class="svc-name">Corte para niño<span class="drink-ico" title="Bebida de cortesía"></span></div><div class="svc-meta mono">30 min</div><div class="svc-price">15 €</div></li>
+        </ul>
+      </div>
+
+      <div class="svc-group svc-group-feature reveal">
+        <h3 class="svc-group-title mono"><span>B</span>Combos</h3>
+        <ul class="svc-list">
+          <li class="svc"><div class="svc-name">Corte + barba<span class="drink-ico" title="Bebida de cortesía"></span><em class="tag mono">Popular</em></div><div class="svc-meta mono">40 min</div><div class="svc-price">20 €</div></li>
+          <li class="svc"><div class="svc-name">Corte + cejas<span class="drink-ico" title="Bebida de cortesía"></span><em class="tag mono">Popular</em></div><div class="svc-meta mono">30 min</div><div class="svc-price">18 €</div></li>
+          <li class="svc svc-top"><div class="svc-name">Corte + barba + cejas<span class="drink-ico" title="Bebida de cortesía"></span><em class="tag mono tag-gold">Completo</em></div><div class="svc-meta mono">40 min</div><div class="svc-price">22 €</div></li>
+        </ul>
+      </div>
+
+      <div class="svc-group reveal">
+        <h3 class="svc-group-title mono"><span>C</span>Detalle</h3>
+        <ul class="svc-list">
+          <li class="svc"><div class="svc-name">Recorte de barba<span class="drink-ico" title="Bebida de cortesía"></span></div><div class="svc-meta mono">20 min</div><div class="svc-price">10 €</div></li>
+          <li class="svc"><div class="svc-name">Cejas<span class="drink-ico" title="Bebida de cortesía"></span></div><div class="svc-meta mono">15 min</div><div class="svc-price">5 €</div></li>
+          <li class="svc"><div class="svc-name">Mascarilla y limpieza<span class="drink-ico" title="Bebida de cortesía"></span></div><div class="svc-meta mono">30 min</div><div class="svc-price">15 €</div></li>
+          <li class="svc"><div class="svc-name">Lavado de cabello</div><div class="svc-meta mono">15 min</div><div class="svc-price">5 €</div></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="svc-foot reveal">
+      <p class="mono">Pago en el local · Reserva online 24/7</p>
+      <a class="btn btn-gold" data-magnetic href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener"><span>Elegir servicio en Booksy</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="work" id="trabajos" data-stage="3">
+    <header class="sec-head">
+      <p class="kicker mono reveal">03 — Trabajos</p>
+      <h2 class="sec-title reveal">Salido de <em>la silla</em></h2>
+      <p class="sec-sub reveal">Cortes reales hechos en Flow Barber. Pasa el cursor para escanear.</p>
+    </header>
+
+    <div class="work-grid">
+      <figure class="shot shot-a reveal" data-tilt>
+        <img src="assets/img/trabajo-01.webp" alt="Fade con diseño de líneas en el lateral, hecho en Flow Barber" loading="lazy" width="1200" height="1594">
+        <figcaption class="mono"><span>#01</span>Fade + diseño</figcaption>
+      </figure>
+      <figure class="shot shot-b reveal" data-tilt>
+        <img src="assets/img/trabajo-04.webp" alt="Corte texturizado con degradado bajo, vista lateral" loading="lazy" width="1024" height="1361">
+        <figcaption class="mono"><span>#02</span>Textura + low fade</figcaption>
+      </figure>
+      <figure class="shot shot-c reveal" data-tilt>
+        <img src="assets/img/trabajo-05.webp" alt="Pelo rizado con mechas y degradado en la nuca" loading="lazy" width="1200" height="2135">
+        <figcaption class="mono"><span>#03</span>Rizo + fade</figcaption>
+      </figure>
+      <figure class="shot shot-d reveal" data-tilt>
+        <img src="assets/img/trabajo-02.webp" alt="Moño alto con degradado lateral y barba perfilada" loading="lazy" width="921" height="1225">
+        <figcaption class="mono"><span>#04</span>Top knot + fade</figcaption>
+      </figure>
+      <figure class="shot shot-e reveal" data-tilt>
+        <img src="assets/img/trabajo-06.webp" alt="Corte corto con degradado alto, vista lateral" loading="lazy" width="1200" height="2133">
+        <figcaption class="mono"><span>#05</span>Crop + high fade</figcaption>
+      </figure>
+      <figure class="shot shot-f reveal" data-tilt>
+        <img src="assets/img/trabajo-03.webp" alt="Corte texturizado con degradado en la nuca, vista trasera" loading="lazy" width="1083" height="1439">
+        <figcaption class="mono"><span>#06</span>Taper trasero</figcaption>
+      </figure>
+    </div>
+
+    <a class="ig-link reveal" href="https://www.instagram.com/flow_barber25/" target="_blank" rel="noopener">
+      <span class="mono">Más trabajos en Instagram</span>
+      <strong>@flow_barber25</strong>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team" id="equipo" data-stage="4">
+    <header class="sec-head">
+      <p class="kicker mono reveal">04 — Equipo</p>
+      <h2 class="sec-title reveal">Tres barberos,<br>un mismo <em>flow</em></h2>
+    </header>
+
+    <div class="team-wrap">
+      <figure class="team-photo reveal">
+        <img src="assets/img/equipo.webp" alt="El equipo de Flow Barber" loading="lazy" width="1200" height="675">
+        <span class="scan" aria-hidden="true"></span>
+        <figcaption class="mono">EQUIPO · FLOW BARBER</figcaption>
+      </figure>
+      <ol class="team-list">
+        <li class="barber reveal"><span class="mono">BRB—01</span><strong>Pool</strong><small class="mono">Barbero</small></li>
+        <li class="barber reveal"><span class="mono">BRB—02</span><strong>Eliud</strong><small class="mono">Barbero</small></li>
+        <li class="barber reveal"><span class="mono">BRB—03</span><strong>Gio</strong><small class="mono">Barbero</small></li>
+      </ol>
+    </div>
+    <p class="team-note mono reveal">Puedes elegir barbero al reservar en Booksy.</p>
+  </section>
+
+  <!-- STUDIO + REVIEW -->
+  <section class="studio" data-stage="5">
+    <figure class="studio-photo reveal">
+      <img src="assets/img/estudio.webp" alt="Interior de Flow Barber con sillones y espejos iluminados" loading="lazy" width="1200" height="674" data-parallax>
+    </figure>
+    <blockquote class="review reveal">
+      <p class="mono review-head"><span class="stars" aria-label="5 de 5 estrellas">★★★★★</span> Reseña publicada en Booksy</p>
+      <p class="review-text">“Excelente servicio, el corte muy <em>clean</em>.”</p>
+      <footer class="review-foot">
+        <div><b data-count="96">96</b><span class="mono">de 5★</span></div>
+        <div><b data-count="2">2</b><span class="mono">de 4★</span></div>
+        <div><b data-count="2">2</b><span class="mono">de 1–2★</span></div>
+        <p class="mono">Distribución de las 100 reseñas</p>
+      </footer>
+    </blockquote>
+  </section>
+
+  <!-- VISIT -->
+  <section class="visit" id="visita" data-stage="6">
+    <header class="sec-head">
+      <p class="kicker mono reveal">05 — Visítanos</p>
+      <h2 class="sec-title reveal">Coordenadas</h2>
+    </header>
+
+    <div class="visit-grid">
+      <div class="panel reveal">
+        <p class="mono panel-label">Dirección</p>
+        <p class="panel-big">Avinguda del Montgó, 26<br>03700 Dénia, Alicante</p>
+        <a class="link-arrow mono" href="https://www.google.com/maps/search/?api=1&amp;query=Flow+Barber+Avinguda+del+Montg%C3%B3+26+D%C3%A9nia" target="_blank" rel="noopener">Cómo llegar ↗</a>
+      </div>
+
+      <div class="panel reveal">
+        <p class="mono panel-label">Horario</p>
+        <table class="hours">
+          <tbody>
+            <tr data-day="1"><th>Lunes</th><td>10:00–14:00 · 16:00–20:00</td></tr>
+            <tr data-day="2"><th>Martes</th><td>10:00–14:00 · 16:00–20:00</td></tr>
+            <tr data-day="3"><th>Miércoles</th><td>10:00–14:00 · 16:00–20:00</td></tr>
+            <tr data-day="4"><th>Jueves</th><td>10:00–14:00 · 16:00–20:00</td></tr>
+            <tr data-day="5"><th>Viernes</th><td>10:00–14:00 · 16:00–20:00</td></tr>
+            <tr data-day="6"><th>Sábado</th><td>10:00–14:00 · 16:00–20:00</td></tr>
+            <tr data-day="0"><th>Domingo</th><td>Cerrado</td></tr>
+          </tbody>
+        </table>
+        <p class="status status-lg mono" data-status><i></i><b>Consulta disponibilidad en Booksy</b></p>
+      </div>
+
+      <div class="panel panel-map reveal">
+        <iframe title="Mapa de Flow Barber en Dénia" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=0.0962%2C38.8309%2C0.1082%2C38.8369&amp;layer=mapnik&amp;marker=38.83389%2C0.10225"></iframe>
+        <span class="map-pin mono" aria-hidden="true">FLOW BARBER</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="final" data-stage="7">
+    <p class="kicker mono reveal">06 — Reserva</p>
+    <a class="final-cta reveal" href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">
+      <span class="final-line">Reserva</span>
+      <span class="final-line final-line-2">tu <em>hora</em> <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+    </a>
+    <p class="final-sub mono reveal">Online en Booksy · elige servicio, barbero y hora</p>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand">
+    <img src="assets/img/logo.webp" alt="Logotipo de Flow Barber" width="72" height="72" loading="lazy">
+    <p>Flow Barber<br><span class="mono">Av. del Montgó 26 · Dénia</span></p>
+  </div>
+  <nav class="foot-links mono" aria-label="Enlaces externos">
+    <a href="https://booksy.com/es-es/153876_flow-barber_barberia_55813_corral-de-calafat" target="_blank" rel="noopener">Booksy ↗</a>
+    <a href="https://www.instagram.com/flow_barber25/" target="_blank" rel="noopener">Instagram ↗</a>
+    <a href="#top">Volver arriba ↑</a>
+  </nav>
+  <p class="foot-legal mono">© <span data-year>2026</span> Flow Barber · Fotografías: Flow Barber (perfil de Booksy)</p>
+</footer>
+
+<script defer src="lib/gsap.min.js?v=20261030"></script>
+<script defer src="lib/ScrollTrigger.min.js?v=20261030"></script>
+<script defer src="lib/three.min.js?v=20261030"></script>
+<script defer src="lib/manifest.js?v=20261030"></script>
+<script defer src="main.js?v=20261030"></script>
+</body>
+</html>
