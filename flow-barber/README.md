@@ -4,7 +4,7 @@ Web de una sola página para Flow Barber (Av. del Montgó 26, Dénia). HTML + CS
 
 - **Publicar:** sube el contenido de esta carpeta (incluido `.htaccess`) a Hostinger, Netlify o cualquier hosting estático.
 - **Probar en local:** `python3 -m http.server 8765` dentro de la carpeta y abre http://localhost:8765/
-- **Reservas:** sistema propio y gratuito (Google Sheets + Calendar + email), en `reservas/`. Para activarlo sigue [`reservas/INSTALAR.md`](reservas/INSTALAR.md) y pega la URL en `bookingApi` de `lib/manifest.js`. Mientras `bookingApi` esté vacío, la sección de reservas muestra "Agenda online en activación". La web no depende de Booksy ni de ninguna plataforma de pago.
+- **Reservas:** sistema propio y gratuito (Google Calendar + email; un calendario por barbero), en `reservas/`. Para activarlo sigue [`reservas/INSTALAR.md`](reservas/INSTALAR.md) y pega la URL en `bookingApi` de `lib/manifest.js`. Mientras `bookingApi` esté vacío, la sección de reservas muestra "Agenda online en activación". La web no depende de Booksy ni de ninguna plataforma de pago.
 - **Panel del dueño:** `admin.html` (con contraseña). Agenda del día, próximas citas, citas por teléfono y cierres. Ver `reservas/INSTALAR.md`.
 - **Presentación para el cliente:** `guia.html` (qué incluye, capturas con datos de ejemplo, instalación paso a paso y preguntas frecuentes).
 - **Editar precios / horario:** precios en `index.html` (sección `#servicios`); horario en `index.html` (`#visita`) y en `lib/manifest.js` (indicador "Abierto/Cerrado").

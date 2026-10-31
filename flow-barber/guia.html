@@ -11,8 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700;800&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="styles.css?v=20261031a">
-<link rel="stylesheet" href="guia.css?v=20261031a">
+<link rel="stylesheet" href="styles.css?v=20261031b">
+<link rel="stylesheet" href="guia.css?v=20261031b">
 <script>document.documentElement.classList.add("js");</script>
 </head>
 <body class="guia">
@@ -68,7 +68,7 @@
         <div><dt class="mono">Instalación</dt><dd>~10 min</dd></div>
         <div><dt class="mono">Los datos</dt><dd>Tuyos</dd></div>
       </dl>
-      <p class="g-foot mono reveal">* Funciona con una cuenta gratuita de Google (Sheets, Calendar y Gmail).</p>
+      <p class="g-foot mono reveal">* Funciona con una cuenta gratuita de Google (Google Calendar y Gmail).</p>
     </div>
     <div class="g-hero-phones reveal" aria-hidden="true">
       <figure class="phone phone-back"><img src="assets/img/guia/panel-1-agenda.webp" alt="" width="780" height="1688"></figure>
@@ -88,7 +88,7 @@
       <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">✂</span><h3>Reserva en 4 pasos</h3><p>Servicio, barbero, día y hora, y sus datos. Sin descargar apps ni crear cuentas.</p></article>
       <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">◷</span><h3>Solo huecos libres</h3><p>La web calcula los huecos según el horario, la duración de cada servicio y las citas de cada barbero. Nadie puede reservar una hora ya ocupada.</p></article>
       <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">✉</span><h3>Confirmación por email</h3><p>El cliente recibe su cita por email con un enlace para cancelar. Tú recibes un aviso de cada reserva y de cada cancelación.</p></article>
-      <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">▦</span><h3>En tu Google Calendar</h3><p>Cada cita aparece sola en el calendario de la barbería, y puedes compartirlo con los barberos.</p></article>
+      <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">▦</span><h3>Un Google Calendar por barbero</h3><p>Cada cita aparece sola en el calendario de su barbero. Cada uno ve su agenda en el móvil, con avisos, y cualquier evento que apunte bloquea esa hora en la web.</p></article>
       <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">⌘</span><h3>Panel del dueño</h3><p>La agenda del día, las próximas citas, las citas por teléfono y los cierres, todo desde el móvil y con contraseña.</p></article>
       <article class="g-feat reveal"><span class="g-ico" aria-hidden="true">⊘</span><h3>Cierres y vacaciones</h3><p>Cierra un día entero o unas horas, para toda la barbería o para un barbero, y la web deja de ofrecer esos huecos.</p></article>
     </div>
@@ -148,19 +148,13 @@ Flow Barber</pre>
       <figure class="g-shot"><div class="phone"><img src="assets/img/guia/panel-0-login.webp" alt="Pantalla de acceso con contraseña" loading="lazy" width="780" height="1688"></div><figcaption><b>Acceso</b>Con contraseña. Tras 10 intentos fallidos se bloquea 10 minutos.</figcaption></figure>
     </div>
 
-    <div class="g-sheet reveal">
-      <p class="mono g-email-label">Y todo queda guardado en una hoja de Google de la barbería (ejemplo de cómo se ordena)</p>
-      <div class="g-sheet-wrap">
-        <table>
-          <thead><tr><th>ID</th><th>Estado</th><th>Fecha</th><th>Hora</th><th>Servicio</th><th>Precio €</th><th>Barbero</th><th>Nombre</th><th>Teléfono</th></tr></thead>
-          <tbody>
-            <tr><td>FB-261031-…</td><td>Completada</td><td>2026-10-31</td><td>10:00</td><td>Corte + barba</td><td>20</td><td>Pool</td><td>Carlos Martín</td><td>600 123 401</td></tr>
-            <tr><td>FB-261031-…</td><td>Confirmada</td><td>2026-10-31</td><td>12:00</td><td>Corte + barba + cejas</td><td>22</td><td>Pool</td><td>Adrián López</td><td>600 123 404</td></tr>
-            <tr><td>FB-261031-…</td><td>Cancelada</td><td>2026-10-31</td><td>17:00</td><td>Rapado</td><td>15</td><td>Pool</td><td>Marcos Vidal</td><td>600 123 407</td></tr>
-          </tbody>
-        </table>
+    <div class="g-cal reveal">
+      <p class="mono g-email-label">Y todo queda en Google Calendar: un calendario por barbero, cada uno con su color (ilustración, no es una captura)</p>
+      <div class="gc" role="img" aria-label="Ilustración de un día en Google Calendar con tres columnas, una por barbero, y sus citas">
+        <div class="gc-hours" aria-hidden="true"><span style="--a:0">10:00</span><span style="--a:60">11:00</span><span style="--a:120">12:00</span><span style="--a:180">13:00</span><span style="--a:240">14:00</span><span style="--a:300">15:00</span><span style="--a:360">16:00</span><span style="--a:420">17:00</span><span style="--a:480">18:00</span><span style="--a:540">19:00</span><span style="--a:600">20:00</span></div>
+        <div class="gc-cols"><div class="gc-col gc-pool"><p class="gc-head"><i></i>Flow Barber · Pool</p><div class="gc-track"><div class="gc-ev " style="--a:0;--b:40"><b>✓ Corte + barba · Carlos</b><span>10:00</span></div><div class="gc-ev " style="--a:120;--b:160"><b>✂ Corte + barba + cejas · Adrián</b><span>12:00</span></div><div class="gc-ev " style="--a:480;--b:520"><b>✂ Corte + barba · Lucas</b><span>18:00</span></div><div class="gc-lunch"></div></div></div><div class="gc-col gc-eliud"><p class="gc-head"><i></i>Flow Barber · Eliud</p><div class="gc-track"><div class="gc-ev " style="--a:30;--b:60"><b>✓ Corte caballero · Javier</b><span>10:30</span></div><div class="gc-ev " style="--a:390;--b:420"><b>✂ Corte + cejas · Daniel</b><span>16:30</span></div><div class="gc-ev " style="--a:450;--b:480"><b>✂ Mascarilla · Álex</b><span>17:30</span></div><div class="gc-lunch"></div></div></div><div class="gc-col gc-gio"><p class="gc-head"><i></i>Flow Barber · Gio</p><div class="gc-track"><div class="gc-ev gc-off" style="--a:60;--b:90"><b>✗ Corte niño · Hugo</b><span>11:00</span></div><div class="gc-ev " style="--a:180;--b:200"><b>✂ Recorte de barba · Sergio</b><span>13:00</span></div><div class="gc-ev gc-block" style="--a:510;--b:600"><b>Médico</b><span>18:30–20:00 · apuntado por Gio</span></div><div class="gc-lunch"></div></div></div></div>
       </div>
-      <p class="g-note">La hoja también tiene una pestaña <b>Bloqueos</b> para los cierres. Se puede abrir, filtrar o exportar a Excel cuando quieras.</p>
+      <p class="g-note">El título del evento cambia con el estado: <b>✂</b> confirmada, <b>✓</b> hecha, <b>✗</b> no vino. Si un barbero apunta algo suyo («Médico»), la web deja de ofrecer esa hora. Para cerrar la barbería un día basta un evento de todo el día en <b>Flow Barber · Cierres</b>.</p>
     </div>
   </section>
 
@@ -180,21 +174,21 @@ Flow Barber</pre>
     <ol class="g-steps">
       <li class="g-step reveal">
         <span class="g-num">1</span>
-        <div><h3>Crear la hoja de reservas</h3>
-          <p>Con la cuenta de Google de la barbería, abre <b>sheets.new</b>. Se crea una hoja en blanco: ponle de nombre <b>Flow Barber — Reservas</b>.</p></div>
+        <div><h3>Crear el proyecto</h3>
+          <p>Con la cuenta de Google de la barbería, abre <b>script.google.com</b> y pulsa <b>Nuevo proyecto</b>. Ponle de nombre <b>Flow Barber — Reservas</b>.</p></div>
       </li>
       <li class="g-step reveal">
         <span class="g-num">2</span>
         <div><h3>Pegar el programa</h3>
-          <p>En la hoja: menú <b>Extensiones → Apps Script</b>. Borra lo que haya en el editor y pega el programa de reservas que te entregamos (<code>Code.gs</code>).</p>
+          <p>Borra lo que haya en el editor y pega el programa de reservas que te entregamos (<code>Code.gs</code>).</p>
           <p>En la línea <code>adminPassword: ""</code> escribe la <b>contraseña del panel</b>: larga y que no uses en otro sitio. Guarda (icono del disquete).</p></div>
       </li>
       <li class="g-step reveal">
         <span class="g-num">3</span>
-        <div><h3>Preparar la hoja y dar permisos</h3>
-          <p>Arriba, elige la función <b>setup</b> y pulsa <b>▶ Ejecutar</b>. Google pedirá permiso para usar la hoja, el calendario y el email.</p>
+        <div><h3>Crear los calendarios y dar permisos</h3>
+          <p>Arriba, elige la función <b>setup</b> y pulsa <b>▶ Ejecutar</b>. Google pedirá permiso para usar el calendario y el email.</p>
           <div class="g-warn"><b>Aviso «Google no ha verificado esta aplicación».</b> Es normal: el programa es de la barbería, no de una empresa externa. Pulsa <b>Configuración avanzada → Ir a … (no seguro) → Permitir</b>.</div>
-          <p>Al volver a la hoja verás dos pestañas nuevas: <b>Reservas</b> y <b>Bloqueos</b>.</p></div>
+          <p>En Google Calendar aparecerán 4 calendarios nuevos: <b>Flow Barber · Pool</b>, <b>· Eliud</b>, <b>· Gio</b> y <b>· Cierres</b>.</p></div>
       </li>
       <li class="g-step reveal">
         <span class="g-num">4</span>
@@ -213,8 +207,14 @@ Flow Barber</pre>
           <ul class="g-checks">
             <li>La sección «Reserva» de la web acepta citas.</li>
             <li>El panel del dueño funciona con tu contraseña.</li>
-            <li>Las citas llegan a tu hoja, a tu calendario y a tu email.</li>
+            <li>Las citas aparecen en Google Calendar y te llega un email de cada una.</li>
           </ul></div>
+      </li>
+      <li class="g-step reveal">
+        <span class="g-num">6</span>
+        <div><h3>Compartir cada calendario con su barbero</h3>
+          <p>En Google Calendar, junto a <b>Flow Barber · Pool</b>: <b>⋮ → Configuración y uso compartido → Compartir con personas concretas</b>, con el email de Pool y permiso <b>«Hacer cambios en eventos»</b>. Igual con Eliud y Gio.</p>
+          <p>Cada barbero verá su agenda en la app de Google Calendar del móvil, con avisos.</p></div>
       </li>
     </ol>
     <p class="g-links reveal">
@@ -226,9 +226,9 @@ Flow Barber</pre>
       <h3>En el día a día</h3>
       <div class="g-daily-grid">
         <div><b>Ver las citas</b><p>En el panel del dueño o en tu Google Calendar.</p></div>
-        <div><b>Que los barberos vean su agenda</b><p>Compartes el Google Calendar con su email.</p></div>
+        <div><b>Bloquear un rato</b><p>Un evento en el calendario del barbero («Médico», «Gestiones»…) y esa hora deja de ofrecerse.</p></div>
         <div><b>Cambiar precios u horario</b><p>Se cambian en el programa y en la web. Te lo hacemos nosotros o te explicamos cómo.</p></div>
-        <div><b>Privacidad</b><p>Los datos se quedan en la cuenta de Google de la barbería. Conviene borrar de vez en cuando las citas antiguas.</p></div>
+        <div><b>Privacidad</b><p>Los datos se quedan en los calendarios de la cuenta de Google de la barbería, y en los de los barberos con quienes los compartas.</p></div>
       </div>
     </div>
   </section>
@@ -240,14 +240,15 @@ Flow Barber</pre>
       <h2 class="sec-title reveal">Lo que <em>conviene</em> saber</h2>
     </header>
     <div class="g-faq">
-      <details class="reveal" open><summary>¿Cuánto cuesta al mes?</summary><p>Nada. Usa los servicios gratuitos de Google: Sheets para guardar, Calendar para la agenda y Gmail para los emails. Una cuenta gratuita permite unos 100 emails al día, de sobra para una barbería.</p></details>
+      <details class="reveal" open><summary>¿Cuánto cuesta al mes?</summary><p>Nada. Usa servicios gratuitos de Google: Calendar para la agenda y Gmail para los emails. Una cuenta gratuita permite unos 100 emails al día, de sobra para una barbería.</p></details>
       <details class="reveal"><summary>¿Qué pasa con Booksy?</summary><p>La web no depende de Booksy en nada. Puedes mantenerlo un tiempo o darte de baja. Si te das de baja, pierdes el perfil que tienes allí con sus reseñas, y los clientes que te encuentran desde la app de Booksy.</p></details>
       <details class="reveal"><summary>¿Y si un cliente quiere cancelar?</summary><p>Si dejó su email, cancela con el enlace del email y el hueco se libera solo. Si no, te avisa y la cancelas tú desde el panel.</p></details>
+      <details class="reveal"><summary>¿Puedo mover una cita desde Google Calendar?</summary><p>Sí: arrastra el evento a otra hora o al calendario de otro barbero y el sistema lo tiene en cuenta. Eso sí, el cliente no recibe aviso automático de ese cambio, así que conviene avisarle.</p></details>
       <details class="reveal"><summary>¿Envía recordatorios antes de la cita?</summary><p>Ahora mismo no. El cliente recibe la confirmación por email al reservar. Se puede añadir un recordatorio por email el día antes.</p></details>
       <details class="reveal"><summary>¿Se puede cobrar o pedir señal online?</summary><p>No está incluido: el pago es en el local, como ahora.</p></details>
       <details class="reveal"><summary>¿Pueden reservar dos personas la misma hora?</summary><p>No. Cada reserva se comprueba en el momento de confirmar. Si alguien acaba de coger ese hueco, la web pide elegir otra hora.</p></details>
-      <details class="reveal"><summary>¿Y si falla Google?</summary><p>Si falla el calendario o el email, la cita se guarda igual en la hoja. Si Google entero no responde, que es muy raro, la web avisa al cliente de que lo intente de nuevo.</p></details>
-      <details class="reveal"><summary>¿Quién es responsable de los datos de los clientes?</summary><p>La barbería: se guardan en su cuenta de Google. El cliente acepta una casilla de uso de datos al reservar. Conviene tener también un aviso de privacidad en la web.</p></details>
+      <details class="reveal"><summary>¿Y si falla Google?</summary><p>Si falla el envío de un email, la cita queda guardada igual en el calendario. Si Google entero no responde, que es muy raro, la web avisa al cliente de que lo intente de nuevo.</p></details>
+      <details class="reveal"><summary>¿Quién es responsable de los datos de los clientes?</summary><p>La barbería: se guardan en sus calendarios de Google. El cliente acepta una casilla de uso de datos al reservar. Conviene tener también un aviso de privacidad en la web.</p></details>
     </div>
   </section>
 
@@ -275,7 +276,7 @@ Flow Barber</pre>
   <p class="foot-legal mono">Propuesta de sistema de reservas propio · Capturas con datos de ejemplo</p>
 </footer>
 
-<script defer src="lib/manifest.js?v=20261031a"></script>
-<script defer src="main.js?v=20261031a"></script>
+<script defer src="lib/manifest.js?v=20261031b"></script>
+<script defer src="main.js?v=20261031b"></script>
 </body>
 </html>

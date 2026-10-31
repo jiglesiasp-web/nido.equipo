@@ -164,8 +164,8 @@
   function blockCard(bl) {
     return '<article class="card is-block"><div class="card-top"><span class="card-time">' +
       (bl.from ? esc(bl.from) + " <small>– " + esc(bl.to || "cierre") + "</small>" : "Todo el día") +
-      '</span><span class="badge">Cerrado</span></div><p class="card-meta" style="margin:6px 0 0">' +
-      esc(bl.barber || "Todos") + (bl.reason ? " · " + esc(bl.reason) : "") + "</p></article>";
+      '</span><span class="badge">' + (bl.own ? "Cerrado" : "Ocupado") + '</span></div><p class="card-meta" style="margin:6px 0 0">' +
+      esc(bl.barber || "Toda la barbería") + (bl.reason ? " · " + esc(bl.reason) : "") + (bl.own ? "" : " · en Google Calendar") + "</p></article>";
   }
   function bindActions(scope, after) {
     $$("[data-act]", scope).forEach(function (btn) {
@@ -331,7 +331,7 @@
       if (!r.ok) { main.innerHTML = '<p class="err">' + esc(r.error) + "</p>"; return; }
       if (st.tab !== "cierres") return;
       var blocks = r.blocks.sort(function (a, b) { return (a.date + a.from).localeCompare(b.date + b.from); });
-      main.innerHTML = "<h1>Cierres</h1><p class=\"muted\" style=\"margin-top:-8px\">Días u horas en que la web no ofrecerá citas.</p>" +
+      main.innerHTML = "<h1>Cierres</h1><p class=\"muted\" style=\"margin-top:-8px\">Días u horas en que la web no ofrecerá citas. También bloquea cualquier evento que pongáis directamente en los calendarios de Google.</p>" +
         (err ? '<p class="err" role="alert">' + esc(err) + "</p>" : "") +
         '<form data-block novalidate class="card" style="border-left-color:var(--gold);margin-bottom:18px">' +
         '<div class="row2"><label class="field"><span>Día</span><input type="date" name="date" min="' + from + '" value="' + from + '"></label>' +
@@ -346,7 +346,8 @@
         "<h2>Próximos cierres</h2>" +
         (blocks.length ? '<div class="list">' + blocks.map(function (b) {
           return '<article class="card is-block"><div class="card-top"><span class="card-time" style="font-size:.95rem">' + esc(relDay(b.date)) + "</span>" +
-            '<button class="btn btn-sm btn-ko" data-unblock="' + b.row + '" data-date="' + b.date + '">Quitar</button></div>' +
+            (b.own ? '<button class="btn btn-sm btn-ko" data-unblock data-cal="' + esc(b.cal) + '" data-event="' + esc(b.event) + '">Quitar</button>'
+                   : '<span class="badge" title="Creado directamente en Google Calendar: se borra desde allí">En Calendar</span>') + "</div>" +
             '<p class="card-meta" style="margin:6px 0 0">' + (b.from ? esc(b.from) + "–" + esc(b.to || "cierre") : "Todo el día") + " · " + esc(b.barber || "Toda la barbería") + (b.reason ? " · " + esc(b.reason) : "") + "</p></article>";
         }).join("") + "</div>" : '<div class="empty">No hay cierres programados.</div>');
 
@@ -362,7 +363,7 @@
       $$("[data-unblock]", main).forEach(function (b) {
         b.addEventListener("click", function () {
           b.disabled = true;
-          call("unblock", { row: +b.dataset.unblock, date: b.dataset.date })
+          call("unblock", { cal: b.dataset.cal, event: b.dataset.event })
             .then(function (r) { if (!r.ok) { toast(r.error, true); return renderBlocks(); } toast("Cierre quitado"); renderBlocks(); })
             .catch(function (e) { if (e.message !== "auth") { toast("Sin conexión", true); b.disabled = false; } });
         });

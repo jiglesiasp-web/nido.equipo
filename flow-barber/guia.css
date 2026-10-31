@@ -43,18 +43,31 @@
 #cliente .g-shot figcaption b { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; background: var(--gold); color: #120d05; letter-spacing: 0; }
 
 /* email + sheet */
-.g-email, .g-sheet { margin-top: 40px; max-width: 760px; }
+.g-email, .g-cal { margin-top: 40px; max-width: 900px; }
 .g-email-label { color: var(--gold); margin: 0 0 12px; text-transform: none; letter-spacing: .04em; font-size: .72rem; }
 .g-email-card { border-radius: 18px; background: #f7f3ea; color: #1a1712; padding: 22px 24px; box-shadow: 0 30px 60px -30px rgba(0,0,0,.8); }
 .g-email-head { margin: 0 0 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,.1); font-size: .92rem; line-height: 1.7; }
 .g-email-head .mono { color: #7a6f5c; display: inline-block; width: 64px; font-size: .62rem; }
 .g-email-card pre { margin: 0; white-space: pre-wrap; font: 400 .95rem/1.55 var(--f-body); }
 .g-email-card u { color: #8a6a12; }
-.g-sheet-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid #c9c2b2; background: #fff; }
-.g-sheet table { border-collapse: collapse; width: 100%; min-width: 760px; color: #202124; font: 400 .82rem/1.3 Arial, sans-serif; }
-.g-sheet th { background: #d4af37; color: #1a1408; font-weight: 700; text-align: left; padding: 8px 10px; border: 1px solid #c9b46e; white-space: nowrap; }
-.g-sheet td { padding: 7px 10px; border: 1px solid #e2e2e2; white-space: nowrap; }
 .g-note { color: var(--ink-2); margin: 12px 0 0; font-size: .92rem; }
+
+/* Google Calendar illustration (not a screenshot) */
+.gc { --h: 640px; display: grid; grid-template-columns: 46px 1fr; border-radius: 16px; background: #fff; color: #3c4043; padding: 14px 14px 14px 6px; overflow-x: auto; font-family: Arial, Helvetica, sans-serif; }
+.gc-hours { position: relative; height: var(--h); margin-top: 34px; }
+.gc-hours span { position: absolute; top: calc(var(--a) / 600 * 100%); right: 6px; transform: translateY(-50%); font-size: 10px; color: #70757a; }
+.gc-cols { display: grid; grid-template-columns: repeat(3, minmax(150px, 1fr)); gap: 6px; min-width: 470px; }
+.gc-head { margin: 0 0 10px; height: 24px; display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #3c4043; white-space: nowrap; overflow: hidden; }
+.gc-head i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); flex: none; }
+.gc-pool { --c: #d4af37; --bg: #f6ecc6; } .gc-eliud { --c: #4a86e8; --bg: #dbe7fb; } .gc-gio { --c: #16a765; --bg: #d2f0e0; }
+.gc-track { position: relative; height: var(--h); background: repeating-linear-gradient(#fff, #fff calc(var(--h) / 10 - 1px), #e8eaed calc(var(--h) / 10 - 1px), #e8eaed calc(var(--h) / 10)); border-left: 1px solid #e8eaed; }
+.gc-lunch { position: absolute; left: 0; right: 0; top: 40%; height: 20%; background: repeating-linear-gradient(135deg, rgba(0,0,0,.035) 0 6px, transparent 6px 12px); }
+.gc-ev { position: absolute; left: 3px; right: 3px; top: calc(var(--a) / 600 * 100%); height: calc((var(--b) - var(--a)) / 600 * 100% - 2px); min-height: 32px; z-index: 1; padding: 3px 6px; border-radius: 6px; background: var(--c); color: #fff; font-size: 11px; line-height: 1.25; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,.15); }
+.gc-pool .gc-ev { color: #2b2206; }
+.gc-ev b { display: block; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gc-ev span { opacity: .9; }
+.gc-ev.gc-off { opacity: .55; }
+.gc-ev.gc-block { background: var(--bg); color: #1e5b3c; border: 1px dashed var(--c); }
 
 /* install */
 .g-needs { list-style: none; margin: 0 0 34px; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
@@ -116,4 +129,12 @@
   .g-kv li { grid-template-columns: 1fr; gap: 2px; }
   .g-links { margin-left: 0; }
   .g-email-card { padding: 18px; }
+  .gc { --h: 560px; grid-template-columns: 34px 1fr; padding: 10px 8px 10px 2px; }
+  .gc-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); min-width: 0; gap: 3px; }
+  .gc-head { font-size: 9.5px; gap: 4px; }
+  .gc-hours span { font-size: 9px; right: 4px; }
+  .gc-ev { font-size: 9.5px; padding: 2px 4px; left: 2px; right: 2px; }
+  .gc-ev b { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  .gc-ev span { display: none; }
+  .gc-ev.gc-block span { display: block; }
 }
